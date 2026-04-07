@@ -21,13 +21,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     InputAction _AttackA;
     //Movement
     [Header("Movement Settings")]
-    [SerializeField] float moveSpeed = 8f;
-    [SerializeField] float acceleration = 50f;
-    [SerializeField] float deceleration = 40f;
-    [SerializeField] float rotationSpeed = 15f;
+    [SerializeField] float moveSpeed = 8;
+    [SerializeField] float acceleration = 50;
+    [SerializeField] float deceleration = 40;
+    [SerializeField] float rotationSpeed = 15;
     //Dash
     [Header("Dash Settings")]
-    [SerializeField] float dashSpeed = 20f;
+    [SerializeField] float dashSpeed = 20;
     [SerializeField] float dashDuration = 0.2f;
     [SerializeField] float dashCooldown = 0.5f;
     float dashTimer;
@@ -57,13 +57,34 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float comboResetTime = 0.8f;
     [SerializeField] float lastClickedTime;
     [Header("Ranged Settings")]
-    [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform firePoint;
     [Header("Attack Cooldowns")]
     [SerializeField] float swordCooldown = 0.4f;
     [SerializeField] float gunCooldown = 0.2f;
-    [SerializeField] float nextSwordTime = 0f;
-    [SerializeField] float nextGunTime = 0f;
+    [SerializeField] float nextSwordTime = 0;
+    [SerializeField] float nextGunTime = 0;
+    [Header("Change Settings")]
+    [SerializeField] bool _isChanging;
+    [SerializeField] int changeCooldown = 1;
+    [Header("Charge Attack Settings")]
+    [SerializeField] float minChargeTime = 1.0f;
+    [SerializeField] float maxChargeTime = 2.0f;
+    [SerializeField] float chargedDamage = 50;
+    [SerializeField] float chargedWidth = 2;
+    [SerializeField] float chargedRange = 15;
+    [SerializeField] float chargeTimer = 0;
+    [SerializeField] bool isCharging = false;
+    [Header("Spirit Attack Settings")]
+    [SerializeField] float nextSpiritTime = 0;
+    [SerializeField] float spiritCooldown = 20;
+    [SerializeField] Transform spawner;
+    [Header("Gravity Settings")]
+    [SerializeField] private Transform _groundSensor;
+    [SerializeField] private float _groundSensorRadius;
+    [SerializeField] private LayerMask _groundLayer;
+    private float _gravity = -9.81f;
+    Vector3 _playerGravity;
+
 
     #endregion
     #region Awake
@@ -116,12 +137,59 @@ public class PlayerController : MonoBehaviour, IDamageable
         
     }
 
+    public void OnChange(InputValue value)
+    {
+        if (value.isPressed && !_isChanging)
+        {
+            _isChanging = true;
+            StartCoroutine(Change());
+        }
+    }
+
+    public void OnSpecialAttack(InputValue value)
+    {
+        if(_CAct)
+        {
+            if (value.isPressed && Time.time >= nextSpiritTime)
+            {
+                SpawnSpirit();
+                nextSpiritTime = Time.time + spiritCooldown;
+            }
+        }
+
+        if(_TAct == true)
+        {
+            if (value.isPressed)
+            {
+                isCharging = true;
+                chargeTimer = 0f;
+                Debug.Log("Cargando disparo...");
+            }
+            else
+            {
+                isCharging = false;
+                
+                if (chargeTimer >= minChargeTime)
+                {
+                    ExecuteChargedShoot();
+                }
+                else
+                {
+                    Debug.Log("Carga insuficiente, disparo cancelado o disparo normal.");
+                }
+                chargeTimer = 0f;
+            }
+        }
+        
+    }
+
     #endregion
     #region Update
 
     void Update()
     {
         HandleTimers();
+        Gravity();
         
         if (isDashing)
         {
@@ -130,6 +198,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         else
         {
             Movement();
+        }
+
+        if (isCharging)
+        {
+            chargeTimer += Time.deltaTime;
+            // VFX? Charging
         }
     }
 
@@ -145,22 +219,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     #endregion
     #region IsGrounded
 
-
-
-
-
-
+    bool IsGrounded()
+    {
+        return Physics.CheckSphere(_groundSensor.position, _groundSensorRadius, _groundLayer);
+    }
 
     #endregion
     #region Gravity
 
-
-
-
-
-
-
-
+    void Gravity()
+    {
+        if(!IsGrounded())
+        {
+            _playerGravity.y += _gravity * Time.deltaTime;
+        }
+        else if(IsGrounded() && _playerGravity.y < 0)
+        {
+            _playerGravity.y = _gravity;
+        }
+        _CC.Move(_playerGravity * Time.deltaTime);
+    }
 
     #endregion
     #region Movement
@@ -203,11 +281,27 @@ public class PlayerController : MonoBehaviour, IDamageable
     #endregion
     #region Change
 
-
-
-
-
-
+    IEnumerator Change()
+    {
+        if(_TAct)
+        {
+            _TAct = false;
+            _CAct = true;
+            _T.SetActive(false);
+            _C.SetActive(true);
+            yield return new WaitForSeconds(1);
+            _isChanging = false;
+        }
+        else if(_CAct)
+        {
+            _CAct = false;
+            _TAct = true;
+            _C.SetActive(false);
+            _T.SetActive(true);
+            yield return new WaitForSeconds(1);
+            _isChanging = false;
+        }
+    }
 
     #endregion
     #region BasicAttack
@@ -247,8 +341,20 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         foreach (Collider enemy in hitEnemies)
         {
-            Debug.Log("Golpeaste a " + enemy.name + " con " + damage + " de daño.");
-            //  Take Damage (damage)
+            IDamageable damageable = enemy.gameObject.GetComponent<IDamageable>();
+            if(damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
+
+            IKnockbackable knockbackable = enemy.GetComponent<IKnockbackable>();
+            if (knockbackable != null)
+            {
+                Vector3 direction = (enemy.transform.position - transform.position).normalized;
+                float force = 10;
+                float duration = 0.2f;
+                knockbackable.ApplyKnockback(direction * force, duration);
+            }
         }
     }
 
@@ -256,19 +362,27 @@ public class PlayerController : MonoBehaviour, IDamageable
     void RangedAttack()
     {
         //Animacion
-        Debug.Log("Disparo");
-        // Pool de la bala
+        GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
+        bullet.SetActive(true);
     }
     
     #endregion
     #region SpecialAttack
-    
 
+    //CEDRIC SPECIAL ATTACK
+    void SpawnSpirit()
+    {
+        GameObject Spirit = PoolManager.Instance.GetPooledObject("Spirits", spawner.position, spawner.rotation);
+        Spirit.SetActive(true);
+    }
 
-
-
-
-
+    //THALYA SPECIAL ATTACK
+    void ExecuteChargedShoot()
+    {
+        Debug.Log("¡DISPARO CARGADO!");
+        GameObject Misile = PoolManager.Instance.GetPooledObject("Misiles", firePoint.position, firePoint.rotation);
+        Misile.SetActive(true);
+    }
 
     #endregion
     #region Ulti

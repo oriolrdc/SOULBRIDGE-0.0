@@ -514,6 +514,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a1809cf4-a9ee-4b55-b3c7-bc1e15602e9c",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e7ad45a7-dde3-4eb8-a358-bf3e47192317",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
