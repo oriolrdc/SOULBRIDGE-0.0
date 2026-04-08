@@ -159,7 +159,6 @@ public class BasicEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     public void TakeDamage(float damage)
     {
         _Health -= damage;
-        //_healthText.text = _Health.ToString();
         if(_Health <= 0)
         {
             Death();
@@ -168,7 +167,7 @@ public class BasicEnemyController : MonoBehaviour, IDamageable, IKnockbackable
 
     void Death()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);    
     }
     
     void OnDrawGizmos()

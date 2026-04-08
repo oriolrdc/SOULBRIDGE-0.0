@@ -53,15 +53,15 @@ public class TechEnemy : MonoBehaviour, IDamageable, IKnockbackable
         switch (currentSatate)
         {
             case EnemyState.Waiting: 
-                Waiting(); 
+                Waiting();
             break;
             
             case EnemyState.Chasing: 
-                Chasing(); 
+                Chasing();
             break;
             
             case EnemyState.Attacking: 
-                Attacking(); 
+                Attacking();
             break;
 
             case EnemyState.Stunned:
@@ -69,7 +69,7 @@ public class TechEnemy : MonoBehaviour, IDamageable, IKnockbackable
             break;
             
             default: 
-                Chasing(); 
+                Chasing();
             break;
         }
     }
@@ -212,11 +212,16 @@ public class TechEnemy : MonoBehaviour, IDamageable, IKnockbackable
     public void TakeDamage(float damage)
     {
         _Health -= damage;
-        if (_healthText != null) _healthText.text = _Health.ToString();
-        if (_Health <= 0) Death();
+        if(_Health <= 0)
+        {
+            Death();
+        }
     }
 
-    void Death() { Destroy(gameObject); }
+    void Death()
+    {
+        gameObject.SetActive(false);
+    }
 
     void OnDrawGizmos()
     {
