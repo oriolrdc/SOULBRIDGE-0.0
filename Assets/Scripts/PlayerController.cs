@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     InputAction _changeA;
     InputAction _dashA;
     InputAction _AttackA;
+    InputAction _specialAttackA;
     //Movement
     [Header("Movement Settings")]
     [SerializeField] float moveSpeed = 8;
@@ -67,13 +68,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] bool _isChanging;
     [SerializeField] int changeCooldown = 1;
     [Header("Charge Attack Settings")]
-    [SerializeField] float minChargeTime = 1.0f;
-    [SerializeField] float maxChargeTime = 2.0f;
-    [SerializeField] float chargedDamage = 50;
-    [SerializeField] float chargedWidth = 2;
-    [SerializeField] float chargedRange = 15;
-    [SerializeField] float chargeTimer = 0;
-    [SerializeField] bool isCharging = false;
+    public float minChargeTime = 1.0f;
+    public float maxChargeTime = 2.0f;
+    public float chargedDamage = 50f;
+    public float chargedWidth = 2f;
+    public float chargedRange = 15f;
+    private float chargeTimer = 0f;
+    private bool isCharging = false;
     [Header("Spirit Attack Settings")]
     [SerializeField] float nextSpiritTime = 0;
     [SerializeField] float spiritCooldown = 20;
@@ -84,7 +85,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private LayerMask _groundLayer;
     private float _gravity = -9.81f;
     Vector3 _playerGravity;
+    [Header("Ultimate Settings")]
+    [SerializeField] float ultDuration = 3f;
+    [SerializeField] float ultCastTime = 0.5f;
+    [SerializeField] float ultDamageTick = 10f;
+    [SerializeField] float ultTickRate = 0.5f;
+    [SerializeField] float ultRadius = 5f;
+    //[SerializeField] GameObject ultVisualEffect;  // Prefab de partículas para el área
+    [SerializeField] bool isUsingUlt = false;
+    [SerializeField] float ultCooldown = 30f;
+    [SerializeField] float nextUltTime = 0f;
+    [Header("Stat Buff Settings")]
+    [SerializeField] float buffDuration = 10f;
+    [SerializeField] float speedMultiplier = 1.5f;
+    [SerializeField] float damageMultiplier = 2f;
+    //[SerializeField] GameObject electricVFX;       // Partículas eléctricas rodeando al jugador
+    public float ultCooldownThalya = 25f;
+    private float nextUltTimeThalya = 0f;
 
+
+    private bool isBuffed = false;
 
     #endregion
     #region Awake
@@ -96,6 +116,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _changeA = InputSystem.actions["Change"];
         _dashA = InputSystem.actions["Dash"];
         _AttackA = InputSystem.actions["Attack"];
+        _specialAttackA = InputSystem.actions["SpecialAttack"];
     }
 
     #endregion
@@ -156,28 +177,37 @@ public class PlayerController : MonoBehaviour, IDamageable
                 nextSpiritTime = Time.time + spiritCooldown;
             }
         }
+    }
 
-        if(_TAct == true)
+    public void OnUlti(InputValue value)
+    {
+        if(_CAct)
         {
-            if (value.isPressed)
+            if (value.isPressed && !isUsingUlt && Time.time >= nextUltTime)
             {
-                isCharging = true;
-                chargeTimer = 0f;
-                Debug.Log("Cargando disparo...");
+                StartCoroutine(ExecuteUltimate());
+                nextUltTime = Time.time + ultCooldown;
             }
+            else if (value.isPressed && Time.time < nextUltTime)
+            {
+                // Opcional: Feedback visual o sonoro de que no está lista
+                float tiempoRestante = nextUltTime - Time.time;
+                Debug.Log("Ulti en cooldown. Faltan: " + tiempoRestante.ToString("F1") + "s");
+            }
+        }
+
+        if(_TAct)
+        {
+            if (value.isPressed && !isBuffed && Time.time >= nextUltTimeThalya)
+            {
+                StartCoroutine(ExecuteStatBuff()); // El modo eléctrico
+                nextUltTimeThalya = Time.time + ultCooldownThalya;
+            }
+            
+            // Si intentas usarla y está en cooldown
             else
             {
-                isCharging = false;
-                
-                if (chargeTimer >= minChargeTime)
-                {
-                    ExecuteChargedShoot();
-                }
-                else
-                {
-                    Debug.Log("Carga insuficiente, disparo cancelado o disparo normal.");
-                }
-                chargeTimer = 0f;
+                Debug.Log("Habilidad aún recargándose...");
             }
         }
         
@@ -200,21 +230,42 @@ public class PlayerController : MonoBehaviour, IDamageable
             Movement();
         }
 
-        if (isCharging)
+        if(_TAct == true)
         {
-            chargeTimer += Time.deltaTime;
-            // VFX? Charging
+            if (_specialAttackA.IsPressed())
+            {
+                if (!isCharging) 
+                {
+                    isCharging = true;
+                    chargeTimer = 0;
+                    Debug.Log("Empezando a cargar...");
+                }
+                
+                chargeTimer += Time.deltaTime;
+
+                // Opcional: Limitar la carga al máximo
+                if (chargeTimer > maxChargeTime) chargeTimer = maxChargeTime;
+            }
+            else // Se ejecuta en el momento que SUELTAS el botón
+            {
+                if (isCharging) 
+                {
+                    if (chargeTimer >= minChargeTime)
+                    {
+                        ExecuteChargedShoot();
+                    }
+                    else
+                    {
+                        Debug.Log("Carga insuficiente");
+                    }
+                    
+                    // Resetear siempre al soltar
+                    isCharging = false;
+                    chargeTimer = 0;
+                }
+            }
         }
     }
-
-    #endregion
-    #region FixedUpdate (Physics)
-
-
-
-
-
-
 
     #endregion
     #region IsGrounded
@@ -245,6 +296,12 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void Movement()
     {
+        if (isUsingUlt) 
+        {
+            currentVelocity = Vector3.zero; // Frenamos la inercia
+            return; // Salimos de la función, el personaje no responde al input
+        }
+
         Vector3 targetDirection = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
         float targetSpeed = targetDirection.magnitude * moveSpeed;
         float currentSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
@@ -361,9 +418,18 @@ public class PlayerController : MonoBehaviour, IDamageable
     // THALYA ATTACKS
     void RangedAttack()
     {
-        //Animacion
-        GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
-        bullet.SetActive(true);
+        if(isBuffed)
+        {
+            GameObject ChargedBullet = PoolManager.Instance.GetPooledObject("ChargedBullets", firePoint.position, firePoint.rotation);
+            ChargedBullet.SetActive(true);
+        }
+        else
+        {
+            //Animacion
+            GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
+            bullet.SetActive(true);
+        }
+        
     }
     
     #endregion
@@ -380,27 +446,119 @@ public class PlayerController : MonoBehaviour, IDamageable
     void ExecuteChargedShoot()
     {
         Debug.Log("¡DISPARO CARGADO!");
-        GameObject Misile = PoolManager.Instance.GetPooledObject("Misiles", firePoint.position, firePoint.rotation);
-        Misile.SetActive(true);
+
+        // 1. Efecto visual (opcional: un rayo láser o estela grande)
+        
+        // 2. Detectar TODO en una línea ancha
+        RaycastHit[] hits = Physics.SphereCastAll(firePoint.position, chargedWidth, transform.forward, chargedRange, enemyLayers);
+
+        // 3. Aplicar daño a cada uno
+        foreach (RaycastHit hit in hits)
+        {
+            Debug.Log("Atravesado: " + hit.collider.name);
+            // hit.collider.GetComponent<EnemyHealth>().TakeDamage(chargedDamage);
+        }
     }
 
     #endregion
     #region Ulti
-    
+    //CEDRIC ULTIMATE
+    IEnumerator ExecuteUltimate()
+    {
+        isUsingUlt = true;
+        
+        // 1. "Cast Time": El personaje se queda quieto cargando energía
+        // Al estar isUsingUlt en true, modificaremos el Movement() para que no se mueva
+        Debug.Log("¡Canteando Ulti!");
+        yield return new WaitForSeconds(ultCastTime);
 
+        // 2. Activar efecto visual
+        /*if (ultVisualEffect != null)
+        {
+            GameObject vfx = Instantiate(ultVisualEffect, transform.position, Quaternion.identity);
+            Destroy(vfx, ultDuration);
+        }*/
 
+        // 3. Daño continuo durante la duración
+        float timer = 0;
+        while (timer < ultDuration)
+        {
+            ApplyUltDamage();
+            timer += ultTickRate;
+            yield return new WaitForSeconds(ultTickRate);
+        }
 
+        isUsingUlt = false;
+    }
 
+    void ApplyUltDamage()
+    {
+        // Detectamos enemigos en el radio
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, ultRadius, enemyLayers);
 
+        foreach (Collider enemy in hitEnemies)
+        {
+            // Aplicar Daño
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+            if (damageable != null) damageable.TakeDamage(ultDamageTick);
 
+            // Aplicar Knockback (hacia afuera del centro del círculo)
+            IKnockbackable knockbackable = enemy.GetComponent<IKnockbackable>();
+            if (knockbackable != null)
+            {
+                Vector3 pushDirection = (enemy.transform.position - transform.position).normalized;
+                // Un knockback más suave pero constante
+                knockbackable.ApplyKnockback(pushDirection * 5f, 0.2f);
+            }
+        }
+    }
 
+    //THALYA ULTIMATE
+    IEnumerator ExecuteStatBuff()
+    {
+        isBuffed = true;
+
+        // 1. Guardar valores originales para no perderlos
+        float originalSpeed = moveSpeed;
+        float originalDamage = AttackDamage;
+
+        // 2. Aplicar la subida (Buff)
+        moveSpeed *= speedMultiplier;
+        AttackDamage *= damageMultiplier;
+
+        Debug.Log("¡MODO ELÉCTRICO ACTIVADO!");
+
+        /*// 3. Activar efecto visual (hijo del jugador para que le siga)
+        GameObject vfx = null;
+        if (electricVFX != null)
+        {
+            vfx = Instantiate(electricVFX, transform.position, Quaternion.identity, transform);
+        }*/
+
+        // 4. Esperar la duración del buff
+        yield return new WaitForSeconds(buffDuration);
+
+        // 5. Resetear stats a la normalidad
+        moveSpeed = originalSpeed;
+        AttackDamage = originalDamage;
+
+        //if (vfx != null) Destroy(vfx);
+
+        isBuffed = false;
+        Debug.Log("El efecto eléctrico ha terminado");
+    }
 
     #endregion
     #region IDanageable
     
     public void TakeDamage(float damage)
     {
+        _Health -= damage;
 
+        if(_Health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     #endregion
@@ -409,6 +567,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     void HandleTimers()
     {
         if (cooldownTimer > 0) cooldownTimer -= Time.deltaTime;
+
+        if (isCharging)
+        {
+            chargeTimer += Time.deltaTime;
+            // Aquí podrías añadir un efecto visual de vibración o partículas
+        }
+
+        if (isCharging) moveSpeed = 3f;
+        else moveSpeed = 8f;
     }
 
     #endregion
@@ -420,6 +587,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         Gizmos.color = Color.red;
         float visualRange = (comboStep == 2) ? 2.5f : 1.5f; 
         Gizmos.DrawWireSphere(attackPoint.position, visualRange);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, ultRadius);
     }
     
     #endregion

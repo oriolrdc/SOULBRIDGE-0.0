@@ -5,11 +5,11 @@ public class Spirit : MonoBehaviour
 {   
     #region Variables
     NavMeshAgent _spiritAgent;
-    [SerializeField] Transform _targetEnemy;
     float _detectionRange = 2f;
     [SerializeField] float _damageArea;
     [SerializeField] LayerMask _enemyMask;
     Transform SelectedEnemy;
+    [SerializeField] float distanceToEnemy;
     //StateMachine
     public SpiritState currentSatate;
     #endregion
@@ -17,7 +17,6 @@ public class Spirit : MonoBehaviour
     void Awake()
     {
         _spiritAgent = GetComponent<NavMeshAgent>();
-        _targetEnemy = GameObject.FindWithTag("Enemy").transform;
     }
     #endregion
     #region SpiritStates
@@ -35,6 +34,26 @@ public class Spirit : MonoBehaviour
     {
         currentSatate = SpiritState.Chasing;
         SelectedEnemy = NearestEnemy().GetComponent<Transform>();
+    }
+    #endregion
+    #region NearestEnemy
+    public GameObject NearestEnemy()
+    {
+        GameObject selectedEnemy = null;
+        float minimumDistance = Mathf.Infinity;
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            float EnemyDistance = Vector3.Distance(enemy.transform.position, transform.position);
+            
+            if (EnemyDistance < minimumDistance)
+            {
+                minimumDistance = EnemyDistance;
+                selectedEnemy = enemy;
+            }
+        }
+
+        return selectedEnemy;
     }
     #endregion
     #region Update
@@ -62,8 +81,12 @@ public class Spirit : MonoBehaviour
     #region OnRange
     bool OnRange(float distance)
     {
-        float distanceToEnemy = Vector3.Distance(transform.position, SelectedEnemy.position);
-        Debug.Log(distanceToEnemy);
+        if(SelectedEnemy != null)
+        {
+            distanceToEnemy = Vector3.Distance(transform.position, SelectedEnemy.position);
+            Debug.Log(distanceToEnemy);
+        }
+
         if(distanceToEnemy <= distance)
         {
             return true;
@@ -95,7 +118,11 @@ public class Spirit : MonoBehaviour
         {
             currentSatate = SpiritState.Attacking;
         }
-        _spiritAgent.SetDestination(SelectedEnemy.position);
+
+        if(SelectedEnemy != null)
+        {
+            _spiritAgent.SetDestination(SelectedEnemy.position);
+        }
     }
     #endregion
     #region Attacking
@@ -117,26 +144,6 @@ public class Spirit : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-    }
-    #endregion
-    #region NearestEnemy
-    public GameObject NearestEnemy()
-    {
-        GameObject selectedEnemy = null;
-        float minimumDistance = Mathf.Infinity;
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemy in enemies)
-        {
-            float EnemyDistance = Vector3.Distance(enemy.transform.position, transform.position);
-            
-            if (EnemyDistance < minimumDistance)
-            {
-                minimumDistance = EnemyDistance;
-                selectedEnemy = enemy;
-            }
-        }
-
-        return selectedEnemy;
     }
     #endregion
     #region Gizmos

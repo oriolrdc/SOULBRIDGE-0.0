@@ -163,7 +163,6 @@ public class MagicEnemy : MonoBehaviour, IDamageable, IKnockbackable
         {
             GameObject bullet = PoolManager.Instance.GetPooledObject("EnemyBullets", _shooter.position, _shooter.rotation);
             bullet.SetActive(true);
-            Debug.Log("shoot");
             AttackTimer = 0;
         }
 

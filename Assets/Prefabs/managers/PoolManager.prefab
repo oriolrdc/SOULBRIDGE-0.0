@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5764719398390775698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7178498927139121821}
+  - component: {fileID: 9176986580786744058}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7178498927139121821
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5764719398390775698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9176986580786744058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5764719398390775698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511df8bbe25e2db4186012df5bce8e81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - parentName: ElectricBullets
+    prefab: {fileID: 4682543545082061533, guid: fcd6c593cb48f3e47925d6996ec50464, type: 3}
+    poolSize: 60
+    pooledObjects: []
+  - parentName: ChargedBullets
+    prefab: {fileID: 4682543545082061533, guid: ac55429617f2c8646983e8f47ab6276a, type: 3}
+    poolSize: 60
+    pooledObjects: []
+  - parentName: EnemyBullets
+    prefab: {fileID: 1218364011409380036, guid: 69697f4cacde958488b94904dec82c86, type: 3}
+    poolSize: 60
+    pooledObjects: []
+  - parentName: Spirits
+    prefab: {fileID: 2632872982985065957, guid: cd8277dd102b33c4ebd08297a36a6898, type: 3}
+    poolSize: 2
+    pooledObjects: []

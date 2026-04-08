@@ -5,7 +5,7 @@ public class BulletController : MonoBehaviour
     [SerializeField] Rigidbody _rb;
     [SerializeField] float _Speed;
     [SerializeField] float _damage;
-    [SerializeField] LayerMask _Layer;
+    [SerializeField] float _Layer;
 
     void Awake()
     {
@@ -26,7 +26,6 @@ public class BulletController : MonoBehaviour
             {
                 damageable.TakeDamage(_damage);
             }
-            Debug.Log("Choque");
             gameObject.SetActive(false);
         }
     }
