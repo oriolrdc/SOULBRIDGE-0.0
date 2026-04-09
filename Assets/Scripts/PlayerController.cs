@@ -575,7 +575,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         if (isCharging) moveSpeed = 3f;
-        else moveSpeed = 8f;
+        else moveSpeed = 10f;
     }
 
     #endregion
