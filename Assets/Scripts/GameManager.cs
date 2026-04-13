@@ -5,6 +5,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Coins")]
+    [SerializeField] int _coins;
+
     void Awake()
     {
         if (Instance == null)
@@ -16,6 +19,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void AddCoins()
+    {
+        _coins++;
     }
 
     public void EndLevel(string scene)

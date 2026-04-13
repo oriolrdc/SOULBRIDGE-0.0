@@ -7,7 +7,8 @@ public class Coin : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
 
-        //GameManager.Instance.AddCoins();
+        GameManager.Instance.AddCoins();
+        gameObject.SetActive(false);
 
     }
 }

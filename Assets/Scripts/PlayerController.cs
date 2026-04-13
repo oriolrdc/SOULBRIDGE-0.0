@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     InputAction _dashA;
     InputAction _AttackA;
     InputAction _specialAttackA;
+    InputAction _InteractA;
     //Movement
     [Header("Movement Settings")]
     [SerializeField] float moveSpeed = 8;
@@ -103,6 +104,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float ultCooldownThalya = 25f;
     private float nextUltTimeThalya = 0f;
 
+    [Header("Interact Settings")]
+    [SerializeField] Transform interactSensor;
+    [SerializeField] float InteractRange;
+    [SerializeField] LayerMask interactableLayers;
 
     private bool isBuffed = false;
 
@@ -117,6 +122,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _dashA = InputSystem.actions["Dash"];
         _AttackA = InputSystem.actions["Attack"];
         _specialAttackA = InputSystem.actions["SpecialAttack"];
+        _InteractA = InputSystem.actions["Interact"];
     }
 
     #endregion
@@ -156,6 +162,14 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
         
+    }
+
+    public void OnInteract(InputValue value)
+    {
+        if (value.isPressed) 
+        {
+            Interact();
+        }
     }
 
     public void OnChange(InputValue value)
@@ -549,6 +563,22 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
 
     #endregion
+    #region Interact
+
+    void Interact()
+    {
+        Collider[] interactables = Physics.OverlapSphere(interactSensor.position, InteractRange, interactableLayers);
+        foreach (Collider item in interactables)
+        {
+            IInteractable interactable = item.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                interactable.Interacted();
+            }
+        }
+    }
+
+    #endregion
     #region IDanageable
     
     public void TakeDamage(float damage)
@@ -590,6 +620,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, ultRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(interactSensor.position, InteractRange);
     }
     
     #endregion
