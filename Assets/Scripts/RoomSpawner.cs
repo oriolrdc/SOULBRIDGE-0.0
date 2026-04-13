@@ -4,12 +4,15 @@ using System.Collections.Generic;
 
 public class RoomSpawner : MonoBehaviour
 {
-    public EncounterData datosEncuentro; // Arrastramos aquí nuestro ScriptableObject
-    public Transform[] spawnPoints;      // Puntos vacíos colocados por la sala
+    public EncounterData datosEncuentro;
+    public Transform[] spawnPoints;
     
     private int oleadaActual = 0;
     private List<GameObject> enemigosActivos = new List<GameObject>();
     public GameObject exitTrigger;
+    public GameObject vfxSpawnCircle;
+    public float tiempoDeAviso = 1.2f;
+    public bool estaSpawneando;
 
     public void IniciarCombate() 
     {
@@ -18,28 +21,39 @@ public class RoomSpawner : MonoBehaviour
 
     IEnumerator SpawnWave()
     {
-        // 1. Bloqueamos el chequeo de victoria
-        bool oleadaSpawneando = true; 
+        estaSpawneando = true;
         WaveData wave = datosEncuentro.oleadas[oleadaActual];
 
-        foreach (GameObject prefab in wave.enemigosParaSpawnear)
+        foreach (GameObject prefabEnemigo in wave.enemigosParaSpawnear)
         {
             Transform punto = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            GameObject enemigo = Instantiate(prefab, punto.position, Quaternion.identity);
             
-            enemigosActivos.Add(enemigo);
-            
-            // Nos suscribimos a su muerte
-            enemigo.GetComponent<EnemyHealth>().OnDeath += () => VerificaryLimpiar(enemigo);
+            // 1. Lanzamos el proceso de spawn individual para cada enemigo
+            StartCoroutine(ProcesoSpawnEnemigo(prefabEnemigo, punto.position));
 
-            yield return new WaitForSeconds(0.5f); 
+            // Espera entre un enemigo y otro de la misma oleada
+            yield return new WaitForSeconds(0.5f);
         }
 
-        // 2. Ya han salido todos, ahora sí permitimos pasar de oleada
-        oleadaSpawneando = false;
+        estaSpawneando = false;
+    }
+
+    IEnumerator ProcesoSpawnEnemigo(GameObject prefab, Vector3 posicion)
+    {
+        // 2. Aparece el círculo de aviso
+        if (vfxSpawnCircle != null)
+        {
+            Instantiate(vfxSpawnCircle, posicion, Quaternion.identity);
+        }
+
+        // 3. Esperamos el tiempo de carga del ataque/aparición
+        yield return new WaitForSeconds(tiempoDeAviso);
+
+        // 4. Instanciamos al enemigo real
+        GameObject enemigo = Instantiate(prefab, posicion, Quaternion.identity);
         
-        // Chequeo de seguridad por si todos murieron mientras spawneaban
-        if(enemigosActivos.Count == 0) SiguienteOleada();
+        enemigosActivos.Add(enemigo);
+        enemigo.GetComponent<EnemyHealth>().OnDeath += () => VerificaryLimpiar(enemigo);
     }
 
     void VerificaryLimpiar(GameObject enemigoMuerto)

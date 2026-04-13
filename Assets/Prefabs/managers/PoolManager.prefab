@@ -61,3 +61,7 @@ MonoBehaviour:
     prefab: {fileID: 2632872982985065957, guid: cd8277dd102b33c4ebd08297a36a6898, type: 3}
     poolSize: 2
     pooledObjects: []
+  - parentName: Coins
+    prefab: {fileID: 7860437859596775874, guid: 5056c18660a8a6449b343a7df93b163d, type: 3}
+    poolSize: 20
+    pooledObjects: []
