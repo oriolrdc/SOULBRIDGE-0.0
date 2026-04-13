@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 285752168751262524}
   - component: {fileID: 7847753852038694353}
+  - component: {fileID: 3633600665855794149}
   - component: {fileID: 2388503406387944098}
   - component: {fileID: 5784482082772818650}
   - component: {fileID: 412454170470407102}
@@ -49,9 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 1835277578322469124}
-  _Health: 80
-  _movementSpeed: 0
-  _healthText: {fileID: 0}
   _player: {fileID: 0}
   _detectionRange: 10
   _damageArea: 2
@@ -59,6 +57,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   currentSatate: 0
+--- !u!114 &3633600665855794149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531818725457397165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c955b669b50826d48ae384a461659e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Health: 100
 --- !u!33 &2388503406387944098
 MeshFilter:
   m_ObjectHideFlags: 0

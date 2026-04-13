@@ -3,12 +3,10 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using System.Collections;
 
-public class TechEnemy : MonoBehaviour, IDamageable, IKnockbackable
+public class TechEnemy : MonoBehaviour, IKnockbackable
 {
     [SerializeField] CapsuleCollider _collider;
-    [SerializeField] float _Health = 20;
     [SerializeField] float _movementSpeed = 3.5f;
-    public Text _healthText;
     UnityEngine.AI.NavMeshAgent _EnemyAgent;
     [SerializeField] Transform _player;
     [SerializeField] float _detectionRange;
@@ -207,20 +205,6 @@ public class TechEnemy : MonoBehaviour, IDamageable, IKnockbackable
             elapsed += Time.deltaTime;
             yield return null;
         }
-    }
-
-    public void TakeDamage(float damage)
-    {
-        _Health -= damage;
-        if(_Health <= 0)
-        {
-            Death();
-        }
-    }
-
-    void Death()
-    {
-        gameObject.SetActive(false);
     }
 
     void OnDrawGizmos()

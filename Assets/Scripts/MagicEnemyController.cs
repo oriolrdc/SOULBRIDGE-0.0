@@ -3,12 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using System.Collections;
 
-public class MagicEnemy : MonoBehaviour, IDamageable, IKnockbackable
+public class MagicEnemy : MonoBehaviour, IKnockbackable
 {
     [SerializeField] CapsuleCollider _collider;
-    [SerializeField] float _Health = 20;
-    [SerializeField] float _movementSpeed;
-    public Text _healthText;
     NavMeshAgent _EnemyAgent;
     [SerializeField] Transform _player;
     [SerializeField] float _detectionRange;
@@ -200,19 +197,6 @@ public class MagicEnemy : MonoBehaviour, IDamageable, IKnockbackable
         }
     }
 
-    public void TakeDamage(float damage)
-    {
-        _Health -= damage;
-        if(_Health <= 0)
-        {
-            Death();
-        }
-    }
-
-    void Death()
-    {
-        gameObject.SetActive(false);
-    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

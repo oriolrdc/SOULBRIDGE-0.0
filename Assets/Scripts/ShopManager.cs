@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour, IInteractable
 {
-    void Start()
+    public void BuyItem()
     {
-        
+
     }
+
+    public void SellItem()
+    {
+
+    }
+
     public void Interacted()
     {
-        
+        Debug.Log("Hola");
     }
+
 }

@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7221833085039149095}
   - component: {fileID: 1634027145593968353}
+  - component: {fileID: 327434131450056851}
   - component: {fileID: 2502817982472395513}
   - component: {fileID: 3580376398817823700}
   - component: {fileID: 693590152304627342}
@@ -51,7 +52,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7221833085039149095
 Transform:
   m_ObjectHideFlags: 0
@@ -81,9 +82,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 693590152304627342}
-  _Health: 80
-  _movementSpeed: 0
-  _healthText: {fileID: 0}
   _player: {fileID: 0}
   _detectionRange: 25
   _damageArea: 19
@@ -93,6 +91,19 @@ MonoBehaviour:
     m_Bits: 128
   currentSatate: 0
   _shooter: {fileID: 7473944755457406963}
+--- !u!114 &327434131450056851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554279822976375711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c955b669b50826d48ae384a461659e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Health: 100
 --- !u!33 &2502817982472395513
 MeshFilter:
   m_ObjectHideFlags: 0

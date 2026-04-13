@@ -3,12 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using System.Collections;
 
-public class BasicEnemyController : MonoBehaviour, IDamageable, IKnockbackable
+public class BasicEnemyController : MonoBehaviour, IKnockbackable
 {
     [SerializeField] CapsuleCollider _collider;
-    [SerializeField] float _Health = 20;
-    [SerializeField] float _movementSpeed;
-    [SerializeField] Text _healthText;
     NavMeshAgent _EnemyAgent;
     [SerializeField] Transform _player;
     [SerializeField] float _detectionRange;
@@ -38,7 +35,6 @@ public class BasicEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     {
         _player = GameObject.FindWithTag("Player").transform;
         currentSatate = EnemyState.Chasing;
-        //_healthText.text = "20";
         timer = 1;
     }
     
@@ -154,20 +150,6 @@ public class BasicEnemyController : MonoBehaviour, IDamageable, IKnockbackable
             elapsed += Time.deltaTime;
             yield return null;
         }
-    }
-    
-    public void TakeDamage(float damage)
-    {
-        _Health -= damage;
-        if(_Health <= 0)
-        {
-            Death();
-        }
-    }
-
-    void Death()
-    {
-        gameObject.SetActive(false);    
     }
     
     void OnDrawGizmos()

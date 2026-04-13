@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a03fe4b26d9bf249a3fa10a5d41f056, type: 3}
-  m_Name: BasicEnemy
+  m_Script: {fileID: 11500000, guid: 3faac4bd79c6c2c469006a7f7e8c232a, type: 3}
+  m_Name: LVL1 Oleada1
   m_EditorClassIdentifier: 
-  prefab: {fileID: 531818725457397165, guid: f3e118a48baf50f439eba40b0ee307e8, type: 3}
-  costePuntos: 5
+  enemigosParaSpawnear:
+  - {fileID: 531818725457397165, guid: f3e118a48baf50f439eba40b0ee307e8, type: 3}

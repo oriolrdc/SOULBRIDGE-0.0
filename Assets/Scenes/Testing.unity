@@ -1830,10 +1830,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagicEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 1554279822976375711, guid: fc1556786b3da5047b454532806087fe, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7221833085039149095, guid: fc1556786b3da5047b454532806087fe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.79
@@ -1890,10 +1886,6 @@ PrefabInstance:
     - target: {fileID: 4881817897347892520, guid: 2b8783e3f7b74764d8b0008189b70c76, type: 3}
       propertyPath: m_Name
       value: TechEnemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 4881817897347892520, guid: 2b8783e3f7b74764d8b0008189b70c76, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7152468484655045512, guid: 2b8783e3f7b74764d8b0008189b70c76, type: 3}
       propertyPath: m_LocalPosition.x

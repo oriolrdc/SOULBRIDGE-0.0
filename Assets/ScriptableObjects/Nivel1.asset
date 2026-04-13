@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a03fe4b26d9bf249a3fa10a5d41f056, type: 3}
-  m_Name: MagicEnemy
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1554279822976375711, guid: fc1556786b3da5047b454532806087fe, type: 3}
-  costePuntos: 10
+  m_Script: {fileID: 0}
+  m_Name: Nivel1
+  m_EditorClassIdentifier: Assembly-CSharp::EncounterData
+  oleadas:
+  - {fileID: 11400000, guid: 198e234f7a4561140bfccf07d75d753d, type: 2}
+  - {fileID: 11400000, guid: 2542ba0a1cac3ae488bdfe5d7e99d9d1, type: 2}
