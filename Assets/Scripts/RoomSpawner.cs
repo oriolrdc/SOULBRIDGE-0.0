@@ -9,6 +9,7 @@ public class RoomSpawner : MonoBehaviour
     
     private int oleadaActual = 0;
     private List<GameObject> enemigosActivos = new List<GameObject>();
+    public GameObject exitTrigger;
 
     public void IniciarCombate() 
     {
@@ -65,7 +66,7 @@ public class RoomSpawner : MonoBehaviour
         else
         {
             Debug.Log("SALA COMPLETADA! Aparece el cofre.");
-            // Aquí llamarías a tu script de puertas para abrirlas
+            exitTrigger.SetActive(true);
         }
     }
 }
