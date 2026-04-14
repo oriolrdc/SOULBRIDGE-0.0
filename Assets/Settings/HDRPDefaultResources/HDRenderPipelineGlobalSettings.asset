@@ -193,26 +193,7 @@ MonoBehaviour:
       - rid: 632723989079785495
       - rid: 632723989079785496
     m_RuntimeSettings:
-      m_List:
-      - rid: 8556427327610290176
-      - rid: 8556427327610290180
-      - rid: 632723989079785472
-      - rid: 632723989079785473
-      - rid: 632723989079785474
-      - rid: 632723989079785476
-      - rid: 632723989079785477
-      - rid: 632723989079785480
-      - rid: 632723989079785481
-      - rid: 632723989079785483
-      - rid: 632723989079785484
-      - rid: 632723989079785485
-      - rid: 632723989079785486
-      - rid: 632723989079785489
-      - rid: 632723989079785490
-      - rid: 632723989079785492
-      - rid: 632723989079785493
-      - rid: 632723989079785494
-      - rid: 632723989079785495
+      m_List: []
   renderingLayerNames:
   - Light Layer default
   - Light Layer 1
@@ -413,7 +394,7 @@ MonoBehaviour:
       type: {class: WaterSystemGlobalSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
         m_Version: 1
-        m_EnableMaskAndCurrentWaterDecals: 0
+        m_EnableMaskAndCurrentWaterDecals: 1
     - rid: 632723989079785486
       type: {class: HDRenderPipelineRuntimeShaders, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
