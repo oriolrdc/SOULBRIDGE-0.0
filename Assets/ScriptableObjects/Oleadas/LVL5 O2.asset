@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3faac4bd79c6c2c469006a7f7e8c232a, type: 3}
+  m_Name: LVL5 O2
+  m_EditorClassIdentifier: 
+  enemigosParaSpawnear:
+  - {fileID: 4881817897347892520, guid: 2b8783e3f7b74764d8b0008189b70c76, type: 3}
+  - {fileID: 4881817897347892520, guid: 2b8783e3f7b74764d8b0008189b70c76, type: 3}
+  - {fileID: 1554279822976375711, guid: fc1556786b3da5047b454532806087fe, type: 3}
+  - {fileID: 1554279822976375711, guid: fc1556786b3da5047b454532806087fe, type: 3}

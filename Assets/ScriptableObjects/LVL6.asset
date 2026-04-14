@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911598cd1b28c8a43aa0f73cba4bbea7, type: 3}
+  m_Name: LVL6
+  m_EditorClassIdentifier: Assembly-CSharp::EncounterData
+  oleadas:
+  - {fileID: 11400000, guid: b6eba0b120d8ecf4c9f00bc150732442, type: 2}
+  - {fileID: 11400000, guid: fd983b8b438a44b4089470af5de6b3f2, type: 2}
+  - {fileID: 11400000, guid: f63ec790c5e2fdf4eb4bb4cc31ac0361, type: 2}
