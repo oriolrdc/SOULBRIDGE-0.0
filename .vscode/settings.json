@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "SOULBRIDGE 0.0.sln"
+    "dotnet.defaultSolution": "SOULBRIDGE-0.0.sln"
 }

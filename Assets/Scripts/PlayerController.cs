@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     //Components
     [Header("Components")]
     [SerializeField] CharacterController _CC;
+    [SerializeField] Animator _CAnimator;   
     //Inputs
     [Header("Inputs")]
     InputAction _moveA;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float acceleration = 50;
     [SerializeField] float deceleration = 40;
     [SerializeField] float rotationSpeed = 15;
+    [SerializeField] float CSpeed;
     //Dash
     [Header("Dash Settings")]
     [SerializeField] float dashSpeed = 20;
@@ -328,6 +330,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         _CC.Move(currentVelocity * Time.deltaTime);
+        if(_CAct && currentVelocity != Vector3.zero)
+        {
+            _CAnimator.SetFloat("CSpeed", 1);
+        }
+        else
+        {
+            _CAnimator.SetFloat("CSpeed", 0);
+        }
     }
 
     #endregion
@@ -470,7 +480,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         foreach (RaycastHit hit in hits)
         {
             Debug.Log("Atravesado: " + hit.collider.name);
-            // hit.collider.GetComponent<EnemyHealth>().TakeDamage(chargedDamage);
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+            if (damageable != null) damageable.TakeDamage(40);
         }
     }
 
@@ -483,7 +494,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         // 1. "Cast Time": El personaje se queda quieto cargando energía
         // Al estar isUsingUlt en true, modificaremos el Movement() para que no se mueva
-        Debug.Log("¡Canteando Ulti!");
+        Debug.Log("¡Casteando Ulti!");
         yield return new WaitForSeconds(ultCastTime);
 
         // 2. Activar efecto visual
