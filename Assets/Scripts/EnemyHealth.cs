@@ -1,21 +1,27 @@
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
+    [SerializeField] Animator _Animator;
+    [SerializeField] BasicEnemyController BES;
     public event Action OnDeath;
     public float _Health;
+    public float maxHealth;
     [Header("Loot Settings")]
     [SerializeField] private int minCoins = 1;
     [SerializeField] private int maxCoins = 5;
     [SerializeField] private Transform lootspawn;
+    [SerializeField] Image HB;
 
     public void TakeDamage(float damage)
     {
         _Health -= damage;
+        HB.fillAmount = _Health / maxHealth;
         if(_Health <= 0)
         {
-            Death();
+            BES.Dead();
         }
     }
 

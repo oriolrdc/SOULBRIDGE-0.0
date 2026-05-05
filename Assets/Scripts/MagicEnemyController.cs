@@ -6,6 +6,7 @@ using System.Collections;
 public class MagicEnemy : MonoBehaviour, IKnockbackable
 {
     [SerializeField] CapsuleCollider _collider;
+    [SerializeField] Animator _Animator;
     NavMeshAgent _EnemyAgent;
     [SerializeField] Transform _player;
     [SerializeField] float _detectionRange;
@@ -18,6 +19,7 @@ public class MagicEnemy : MonoBehaviour, IKnockbackable
     [SerializeField] Transform _shooter;
     private float timer;
     private float stunTimer;
+    
 
     void Awake()
     {
@@ -41,7 +43,6 @@ public class MagicEnemy : MonoBehaviour, IKnockbackable
     {
         _player = GameObject.FindWithTag("Player").transform;
         currentSatate = EnemyState.Chasing;
-        //_healthText.text = "20";
         AttackTimer = 1;
     }
 
@@ -91,7 +92,6 @@ public class MagicEnemy : MonoBehaviour, IKnockbackable
 
     void Waiting()
     {
-        //animaciones
         if(_player != null)
         {
             currentSatate = EnemyState.Chasing;
