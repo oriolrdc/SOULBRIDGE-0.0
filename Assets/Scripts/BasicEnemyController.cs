@@ -7,6 +7,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
 {
     [SerializeField] CapsuleCollider _collider;
     [SerializeField] Animator _Animator;
+    [SerializeField] EnemyHealth EH;
     NavMeshAgent _EnemyAgent;
     [SerializeField] Transform _player;
     [SerializeField] float _detectionRange;
@@ -16,7 +17,6 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     private float attackCooldown = 1;
     private float timer;
     private float stunTimer;
-    public bool isDead;
 
     void Awake()
     {
@@ -31,9 +31,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
 
         Attacking,
 
-        Stunned,
-
-        Dead
+        Stunned
     }
     void Start()
     {
@@ -83,7 +81,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     
     void Waiting()
     {
-        if(isDead) return;
+        if(EH.isDead) return;
         _Animator.SetFloat("Speed", 0);
         if(_player != null)
         {
@@ -93,7 +91,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     
     void Chasing()
     {
-        if(isDead) return;
+        if(EH.isDead) return;
         if(_player == null)
         {
             currentSatate = EnemyState.Waiting;
@@ -111,7 +109,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     
     void Attacking()
     {
-        if(isDead) return;
+        if(EH.isDead) return;
         if(!OnRange(_damageArea))
         {
             currentSatate = EnemyState.Chasing;
@@ -164,12 +162,9 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
 
     public void Dead()
     {
-        currentSatate = EnemyState.Waiting;
-        isDead = true;
+        Debug.Log("Holis");
         _collider.enabled = false;
         _EnemyAgent.isStopped = true;
-        _Animator.SetTrigger("Death");
-        
     }
     
     void OnDrawGizmos()

@@ -370,6 +370,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             _CAct = true;
             _T.SetActive(false);
             _C.SetActive(true);
+            UIManager.Instance.UpdateChangeBar();
             yield return new WaitForSeconds(1);
             _isChanging = false;
         }
@@ -379,6 +380,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             _TAct = true;
             _C.SetActive(false);
             _T.SetActive(true);
+            UIManager.Instance.UpdateChangeBar();
             yield return new WaitForSeconds(1);
             _isChanging = false;
         }
@@ -595,6 +597,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         _Health -= damage;
+        UIManager.Instance.UpdateHB(_Health / _maxHealth);
 
         if(_Health <= 0)
         {
