@@ -12,9 +12,9 @@ public class BulletController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    void Start()
+    void FixedUpdate()
     {
-        _rb.linearVelocity = transform.forward * _Speed;
+        transform.Translate(Vector3.forward * _Speed * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider collider)
