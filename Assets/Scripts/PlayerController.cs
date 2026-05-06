@@ -7,6 +7,12 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     #region Variables
 
+    //[SerializeField] float moveSpeed = 8;
+    //[SerializeField] float dashCooldown = 0.5f;
+    //[SerializeField] float _maxHealth = 100;
+    //[SerializeField] float _Health = 100;
+    //[SerializeField] float AttackDamage = 10;
+
     //Components
     [Header("Components")]
     [SerializeField] CharacterController _CC;
@@ -24,7 +30,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     InputAction _InteractA;
     //Movement
     [Header("Movement Settings")]
-    [SerializeField] float moveSpeed = 8;
     [SerializeField] float acceleration = 50;
     [SerializeField] float deceleration = 40;
     [SerializeField] float rotationSpeed = 15;
@@ -33,16 +38,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Dash Settings")]
     [SerializeField] float dashSpeed = 20;
     [SerializeField] float dashDuration = 0.2f;
-    [SerializeField] float dashCooldown = 0.5f;
     float dashTimer;
     float cooldownTimer;
     bool isDashing;
     //Otras
     [Header("Other Settings")]
     [SerializeField] float _TurnVelocity = 0.2f;
-    [SerializeField] float _maxHealth = 100;
-    [SerializeField] float _Health = 100;
-    [SerializeField] float AttackDamage = 5;
+    
     //Cedric
     [Header("Cedric Settings")]
     [SerializeField] GameObject _C;
@@ -203,6 +205,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 StartCoroutine(ExecuteUltimate());
                 nextUltTime = Time.time + ultCooldown;
+                UIManager.Instance.CCUlt();
             }
             else if (value.isPressed && Time.time < nextUltTime)
             {
@@ -218,6 +221,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 StartCoroutine(ExecuteStatBuff()); // El modo eléctrico
                 nextUltTimeThalya = Time.time + ultCooldownThalya;
+                UIManager.Instance.CTUlt();
             }
             
             // Si intentas usarla y está en cooldown
@@ -319,10 +323,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         Vector3 targetDirection = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
-        float targetSpeed = targetDirection.magnitude * moveSpeed;
+        float targetSpeed = targetDirection.magnitude * PlayerData.Instance.moveSpeed;
         float currentSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
         float accelRate = (targetSpeed > 0.01f) ? acceleration : deceleration;
-        currentVelocity = Vector3.MoveTowards(currentVelocity, targetDirection * moveSpeed, accelRate * Time.deltaTime);
+        currentVelocity = Vector3.MoveTowards(currentVelocity, targetDirection * PlayerData.Instance.moveSpeed, accelRate * Time.deltaTime);
         if (targetDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
@@ -347,7 +351,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         isDashing = true;
         dashTimer = dashDuration;
-        cooldownTimer = dashCooldown;
+        cooldownTimer = PlayerData.Instance.dashCooldown;
         Vector3 inputDir = new Vector3(_moveInput.x, 0, _moveInput.y);
         dashDirection = inputDir.magnitude > 0 ? inputDir.normalized : transform.forward;
     }
@@ -364,13 +368,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     IEnumerator Change()
     {
+        if(_isChanging)
+        {
+            UIManager.Instance.ChangeHBandHab();
+            UIManager.Instance.UpdateChangeBar();
+        }
         if(_TAct)
         {
             _TAct = false;
             _CAct = true;
             _T.SetActive(false);
             _C.SetActive(true);
-            UIManager.Instance.UpdateChangeBar();
             yield return new WaitForSeconds(1);
             _isChanging = false;
         }
@@ -380,7 +388,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             _TAct = true;
             _C.SetActive(false);
             _T.SetActive(true);
-            UIManager.Instance.UpdateChangeBar();
             yield return new WaitForSeconds(1);
             _isChanging = false;
         }
@@ -396,21 +403,24 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         if (comboStep == 0)
         {
-            Debug.Log("--- ATAQUE 1: Tajo rápido ---");
-            Attack(10, 1.5f);
+            Debug.Log("--- ATAQUE 1: Tajo rápido --- " + PlayerData.Instance.AttackDamage);
+            Attack(PlayerData.Instance.AttackDamage, 1.5f);
             nextSwordTime = Time.time + 0.25f;
+            UIManager.Instance.CCBasic(0.25f);
         }
         else if (comboStep == 1)
         {
             Debug.Log("--- ATAQUE 2: Tajo inverso ---");
-            Attack(10, 1.5f);
+            Attack(PlayerData.Instance.AttackDamage, 1.5f);
             nextSwordTime = Time.time + 0.25f;
+            UIManager.Instance.CCBasic(0.25f);
         }
         else if (comboStep == 2)
         {
             Debug.Log("--- ATAQUE 3: ESTOCADA FINAL ---");
-            Attack(25, 2.5f);
+            Attack(PlayerData.Instance.AttackDamage + 10, 2.5f);
             nextSwordTime = Time.time + 0.6f;
+            UIManager.Instance.CCBasic(0.6f);
         }
 
         // Avanzar al siguiente paso o volver al inicio
@@ -448,12 +458,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             GameObject ChargedBullet = PoolManager.Instance.GetPooledObject("ChargedBullets", firePoint.position, firePoint.rotation);
             ChargedBullet.SetActive(true);
+            UIManager.Instance.CTBasic();
         }
         else
         {
             //Animacion
             GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
             bullet.SetActive(true);
+            UIManager.Instance.CTBasic();
         }
         
     }
@@ -466,12 +478,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         GameObject Spirit = PoolManager.Instance.GetPooledObject("Spirits", spawner.position, spawner.rotation);
         Spirit.SetActive(true);
+        UIManager.Instance.CCPHab();
     }
 
     //THALYA SPECIAL ATTACK
     void ExecuteChargedShoot()
     {
         Debug.Log("¡DISPARO CARGADO!");
+        UIManager.Instance.CTPHab();
 
         // 1. Efecto visual (opcional: un rayo láser o estela grande)
         
@@ -546,12 +560,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         isBuffed = true;
 
         // 1. Guardar valores originales para no perderlos
-        float originalSpeed = moveSpeed;
-        float originalDamage = AttackDamage;
+        float originalSpeed = PlayerData.Instance.moveSpeed;
+        float originalDamage = PlayerData.Instance.BulletDamage;
 
         // 2. Aplicar la subida (Buff)
-        moveSpeed *= speedMultiplier;
-        AttackDamage *= damageMultiplier;
+        PlayerData.Instance.moveSpeed *= speedMultiplier;
+        PlayerData.Instance.BulletDamage *= damageMultiplier;
 
         Debug.Log("¡MODO ELÉCTRICO ACTIVADO!");
 
@@ -566,8 +580,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(buffDuration);
 
         // 5. Resetear stats a la normalidad
-        moveSpeed = originalSpeed;
-        AttackDamage = originalDamage;
+        PlayerData.Instance.moveSpeed = originalSpeed;
+        PlayerData.Instance.BulletDamage = originalDamage;
 
         //if (vfx != null) Destroy(vfx);
 
@@ -596,10 +610,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     
     public void TakeDamage(float damage)
     {
-        _Health -= damage;
-        UIManager.Instance.UpdateHB(_Health / _maxHealth);
+        PlayerData.Instance._Health -= damage;
+        UIManager.Instance.UpdateHB(PlayerData.Instance._Health / PlayerData.Instance._maxHealth);
 
-        if(_Health <= 0)
+        if(PlayerData.Instance._Health <= 0)
         {
             gameObject.SetActive(false);
         }
@@ -618,8 +632,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             // Aquí podrías añadir un efecto visual de vibración o partículas
         }
 
-        if (isCharging) moveSpeed = 3f;
-        else moveSpeed = 10f;
+        if (isCharging) PlayerData.Instance.moveSpeed = 3f;
+        else PlayerData.Instance.moveSpeed = 10f;
     }
 
     #endregion

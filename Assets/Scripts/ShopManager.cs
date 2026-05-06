@@ -4,67 +4,98 @@ using UnityEngine.InputSystem;
 
 public class ShopManager : MonoBehaviour, IInteractable
 {
-    [SerializeField] GameObject _SNCanva;
-    [SerializeField] PlayerInput playerInput;
-    float MejoraDeFuerza;
-    float MejoraDeVelocidad;
-    float MejoraDeDash;
-    [SerializeField] Text _fuerzaTxt;
-    [SerializeField] Text _velocidadTxt;
-    [SerializeField] Text _dashTxt;
-    [SerializeField] float reminingPoints;
+    public ScriptableItems[] mejoras;
+    public Image[] iconos;
+    public Text[] price;
+    public Image inspectImagen;
+    public Text itemName;
+    public Text itemDescription;
 
-    public void CheckRemainingPoints(string Type)
+    public GameObject shopCanvas;
+    public PlayerInput inputs;
+    public ScriptableItems itemSeleccionado;
+
+    void Start()
     {
-        if(reminingPoints > 0)
+        foreach(ScriptableItems item in mejoras)
         {
-            SubirNivel(Type);
+            item.comprada = false;
         }
     }
 
-    void SubirNivel(string Type)
+    void OnEnable()
     {
-        if(Type == "Fuerza")
+        RellenarInfo();
+    }
+
+    void RellenarInfo()
+    {
+        for (int i = 0; i < mejoras.Length; i++)
         {
-            if(MejoraDeFuerza < 5)
-            {
-                MejoraDeFuerza ++;
-                _fuerzaTxt.text = MejoraDeFuerza.ToString() + "/5";
-            }
-        }
-        if(Type == "Velocidad")
-        {
-            if(MejoraDeVelocidad < 5)
-            {
-                MejoraDeVelocidad ++;
-                _velocidadTxt.text = MejoraDeVelocidad.ToString() + "/5";
-            }
-        }
-        if(Type == "Dash")
-        {
-            if(MejoraDeDash < 5)
-            {
-                MejoraDeDash ++;
-                _dashTxt.text = MejoraDeDash.ToString() + "/5";
-            }
+            iconos[i].sprite = mejoras[i].icono;
+            price[i].text = mejoras[i].price.ToString();
         }
     }
 
-    public void ResetStats()
+    public void RellenarInspeccion(ScriptableItems item)
     {
+        inspectImagen.sprite = item.icono;
+        itemName.text = item.nombre;
+        itemDescription.text = item.descripcion;
+        itemSeleccionado = item;
+    }
 
+    public void CloseShop()
+    {
+        shopCanvas.SetActive(false);
+        inputs.actions.Enable();
     }
 
     public void Interacted()
     {
-        _SNCanva.SetActive(true);
-        playerInput.actions.Disable();
+        shopCanvas.SetActive(true);
+        inputs.actions.Disable();
     }
 
-    public void CloseSN()
+    public void TryToBuy()
     {
-        _SNCanva.SetActive(false);
-        playerInput.actions.Enable();
+        if(itemSeleccionado.nombre == "Reflejos de Mercurio" && !itemSeleccionado.comprada && GameManager.Instance._coins >= itemSeleccionado.price)
+        {
+            GameManager.Instance._coins -= itemSeleccionado.price;
+            PlayerData.Instance.dashCooldown = 0.2f;
+            itemSeleccionado.comprada = true;
+            Debug.Log("has comprado" + itemSeleccionado.nombre);
+        }
+        if(itemSeleccionado.nombre == "Calibre de Impacto" && !itemSeleccionado.comprada && GameManager.Instance._coins >= itemSeleccionado.price)
+        {
+            GameManager.Instance._coins -= itemSeleccionado.price;
+            PlayerData.Instance.BulletDamage = 20;
+            itemSeleccionado.comprada = true;
+            Debug.Log("has comprado" + itemSeleccionado.nombre);
+        }
+        if(itemSeleccionado.nombre == "Filo de Espinas" && !itemSeleccionado.comprada && GameManager.Instance._coins >= itemSeleccionado.price)
+        {
+            GameManager.Instance._coins -= itemSeleccionado.price;
+            PlayerData.Instance.AttackDamage = 20;
+            itemSeleccionado.comprada = true;
+            Debug.Log("has comprado" + itemSeleccionado.nombre);
+        }
+        if(itemSeleccionado.nombre == "Zancada del Viento" && !itemSeleccionado.comprada && GameManager.Instance._coins >= itemSeleccionado.price)
+        {
+            GameManager.Instance._coins -= itemSeleccionado.price;
+            PlayerData.Instance.moveSpeed = 10;
+            itemSeleccionado.comprada = true;
+            Debug.Log("has comprado" + itemSeleccionado.nombre);
+        }
+        if(itemSeleccionado.nombre == "Coraza Espiritual" && !itemSeleccionado.comprada && GameManager.Instance._coins >= itemSeleccionado.price)
+        {
+            GameManager.Instance._coins -= itemSeleccionado.price;
+            PlayerData.Instance._maxHealth = 120;
+            PlayerData.Instance._Health = 120;
+            itemSeleccionado.comprada = true;
+            Debug.Log("has comprado" + itemSeleccionado.nombre);
+        }
     }
+
 
 }

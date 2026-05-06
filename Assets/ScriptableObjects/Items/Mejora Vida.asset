@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90e4f81912b88f947b50c17263f05c7b, type: 3}
+  m_Name: Mejora Vida
+  m_EditorClassIdentifier: 
+  nombre: Coraza Espiritual
+  descripcion: "Refuerza la esencia vital del personaje, otorgando un incremento
+    permanente a los puntos de salud m\xE1ximos."
+  price: 200
+  icono: {fileID: 355283028, guid: 6865bcc2e1106d04d98da1d60cc4530a, type: 3}
+  iconoComprada: {fileID: 0}
+  multiplicador: 0
+  comprada: 0

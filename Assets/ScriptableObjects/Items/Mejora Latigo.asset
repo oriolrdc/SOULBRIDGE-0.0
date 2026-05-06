@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90e4f81912b88f947b50c17263f05c7b, type: 3}
+  m_Name: Mejora Latigo
+  m_EditorClassIdentifier: 
+  nombre: Filo de Espinas
+  descripcion: "A\xF1ade fragmentos de obsidiana al l\xE1tigo, aumentando el da\xF1o
+    base de cada azote."
+  price: 200
+  icono: {fileID: -1595774480, guid: 6865bcc2e1106d04d98da1d60cc4530a, type: 3}
+  iconoComprada: {fileID: 0}
+  multiplicador: 10
+  comprada: 0
