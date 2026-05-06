@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Coins")]
     public int _coins;
+    public Text _coinsText;
 
     void Awake()
     {
@@ -23,7 +25,9 @@ public class GameManager : MonoBehaviour
 
     public void AddCoins()
     {
-        _coins++;
+        int cantidadDinero = Random.Range(10, 50);
+        _coins += cantidadDinero;
+        _coinsText.text = _coins.ToString();
     }
 
     public void EndLevel(string scene)
