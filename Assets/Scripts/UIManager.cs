@@ -6,20 +6,20 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    [SerializeField] GameObject _THBr;
-    [SerializeField] GameObject _CHBr;
-    [SerializeField] Image _Rhb;
-    [SerializeField] Image _Lhb;
-    [SerializeField] Image _Ccb;
-    [SerializeField] GameObject _CHabilities;
-    [SerializeField] GameObject _THabilities;
+    public GameObject _THBr;
+    public GameObject _CHBr;
+    public Image _Rhb;
+    public Image _Lhb;
+    public Image _Ccb;
+    public GameObject _CHabilities;
+    public GameObject _THabilities;
 
-    [SerializeField] Image _CUlt;
-    [SerializeField] Image _CCPHab;
-    [SerializeField] Image _CBasic;
-    [SerializeField] Image _TUlt;
-    [SerializeField] Image _CTPHab;
-    [SerializeField] Image _TBasic;
+    public Image _CUlt;
+    public Image _CCPHab;
+    public Image _CBasic;
+    public Image _TUlt;
+    public Image _CTPHab;
+    public Image _TBasic;
 
     void Awake()
     {

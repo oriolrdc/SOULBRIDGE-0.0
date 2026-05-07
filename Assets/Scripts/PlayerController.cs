@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     //Components
     [Header("Components")]
     [SerializeField] CharacterController _CC;
-    [SerializeField] Animator _CAnimator;   
+    [SerializeField] Animator _CAnimator;
+    [SerializeField] Animator _TAnimator;   
     //Inputs
     [Header("Inputs")]
     InputAction _moveA;
@@ -342,6 +343,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _CAnimator.SetFloat("CSpeed", 0);
         }
+
+        if(_TAct && currentVelocity != Vector3.zero)
+        {
+            _TAnimator.SetFloat("TSpeed", 1);
+        }
+        else
+        {
+            _TAnimator.SetFloat("TSpeed", 0);
+        }
     }
 
     #endregion
@@ -403,6 +413,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         if (comboStep == 0)
         {
+            _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 1: Tajo rápido --- " + PlayerData.Instance.AttackDamage);
             Attack(PlayerData.Instance.AttackDamage, 1.5f);
             nextSwordTime = Time.time + 0.25f;
@@ -410,6 +421,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (comboStep == 1)
         {
+            _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 2: Tajo inverso ---");
             Attack(PlayerData.Instance.AttackDamage, 1.5f);
             nextSwordTime = Time.time + 0.25f;
@@ -417,6 +429,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (comboStep == 2)
         {
+            _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 3: ESTOCADA FINAL ---");
             Attack(PlayerData.Instance.AttackDamage + 10, 2.5f);
             nextSwordTime = Time.time + 0.6f;
@@ -456,13 +469,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if(isBuffed)
         {
+            _TAnimator.SetTrigger("Shoot");
             GameObject ChargedBullet = PoolManager.Instance.GetPooledObject("ChargedBullets", firePoint.position, firePoint.rotation);
             ChargedBullet.SetActive(true);
             UIManager.Instance.CTBasic();
         }
         else
         {
-            //Animacion
+            _TAnimator.SetTrigger("Shoot");
             GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
             bullet.SetActive(true);
             UIManager.Instance.CTBasic();
@@ -476,6 +490,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     //CEDRIC SPECIAL ATTACK
     void SpawnSpirit()
     {
+        _CAnimator.SetTrigger("SpecialAt");
         GameObject Spirit = PoolManager.Instance.GetPooledObject("Spirits", spawner.position, spawner.rotation);
         Spirit.SetActive(true);
         UIManager.Instance.CCPHab();
@@ -507,6 +522,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     IEnumerator ExecuteUltimate()
     {
         isUsingUlt = true;
+        _CAnimator.SetBool("isUltOn", true);
         
         // 1. "Cast Time": El personaje se queda quieto cargando energía
         // Al estar isUsingUlt en true, modificaremos el Movement() para que no se mueva
@@ -530,6 +546,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         isUsingUlt = false;
+        _CAnimator.SetBool("isUtliOn", false);
     }
 
     void ApplyUltDamage()
@@ -615,8 +632,23 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if(PlayerData.Instance._Health <= 0)
         {
-            gameObject.SetActive(false);
+            StartCoroutine(Death());
         }
+    }
+
+    IEnumerator Death()
+    {
+        if(_CAct)
+        {
+            _CAnimator.SetTrigger("Death");
+        }
+        else if(_TAct)
+        {
+            _TAnimator.SetTrigger("Death");
+        }
+
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
     }
 
     #endregion

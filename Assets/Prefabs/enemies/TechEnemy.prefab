@@ -243,7 +243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7152468484655045512
 Transform:
   m_ObjectHideFlags: 0
@@ -297,8 +297,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 0}
+  _collider: {fileID: 0}
   _Health: 100
   maxHealth: 0
+  _EnemyAgent: {fileID: 0}
   minCoins: 1
   maxCoins: 5
   lootspawn: {fileID: 8001505059993893483}

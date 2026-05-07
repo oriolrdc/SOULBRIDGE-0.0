@@ -33,6 +33,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
 
         Stunned
     }
+    
     void Start()
     {
         _player = GameObject.FindWithTag("Player").transform;
@@ -82,28 +83,38 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     void Waiting()
     {
         if(EH.isDead) return;
-        _Animator.SetFloat("Speed", 0);
         if(_player != null)
         {
             currentSatate = EnemyState.Chasing;
         }
+        _Animator.SetFloat("Speed", 0);
     }
     
     void Chasing()
     {
         if(EH.isDead) return;
+
         if(_player == null)
         {
             currentSatate = EnemyState.Waiting;
+            return;
         }
+
         if(OnRange(_detectionRange))
         {
-            _Animator.SetFloat("Speed", 1);
+            _EnemyAgent.isStopped = false;
             _EnemyAgent.SetDestination(_player.position);
+            _Animator.SetFloat("Speed", 1);
+
+            if(OnRange(_damageArea))
+            {
+                currentSatate = EnemyState.Attacking;
+            }
         }
-        if(OnRange(_damageArea))
+        else
         {
-            currentSatate = EnemyState.Attacking;
+            _EnemyAgent.isStopped = true;
+            _Animator.SetFloat("Speed", 0);
         }
     }
     
@@ -162,7 +173,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
 
     public void Dead()
     {
-        Debug.Log("Holis");
+        _Animator.SetTrigger("Death");
         _collider.enabled = false;
         _EnemyAgent.isStopped = true;
     }
