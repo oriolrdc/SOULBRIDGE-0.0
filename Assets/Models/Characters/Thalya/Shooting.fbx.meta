@@ -34,8 +34,8 @@ ModelImporter:
       name: Shooting
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
-      lastFrame: 35
+      firstFrame: 8
+      lastFrame: 12
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

@@ -1490,7 +1490,7 @@ GameObject:
   - component: {fileID: 816724466}
   - component: {fileID: 816724465}
   m_Layer: 3
-  m_Name: Cube
+  m_Name: Suelo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3396,6 +3396,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2112804128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2112804129}
+  m_Layer: 0
+  m_Name: Luego borrar, gracias
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2112804129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112804128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.089322, y: 4.3139234, z: -11.629578}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2127814636 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8068193015477602829, guid: 2e62135a7bbd3ce419dda6d9fb4c21d7, type: 3}
@@ -3595,6 +3626,10 @@ PrefabInstance:
     - target: {fileID: 1554279822976375711, guid: fc1556786b3da5047b454532806087fe, type: 3}
       propertyPath: m_Name
       value: MagicEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554279822976375711, guid: fc1556786b3da5047b454532806087fe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7221833085039149095, guid: fc1556786b3da5047b454532806087fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3977,6 +4012,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasicEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 531818725457397165, guid: f3e118a48baf50f439eba40b0ee307e8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7847753852038694353, guid: f3e118a48baf50f439eba40b0ee307e8, type: 3}
       propertyPath: _player
       value: 
@@ -3994,6 +4033,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4291724885129582529, guid: 0f4b701efccc93349a44a38caf3e623d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6697780359582778980, guid: 0f4b701efccc93349a44a38caf3e623d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.06
@@ -4404,3 +4447,4 @@ SceneRoots:
   - {fileID: 1478226048}
   - {fileID: 1149531032}
   - {fileID: 1333685549983453776}
+  - {fileID: 2112804129}

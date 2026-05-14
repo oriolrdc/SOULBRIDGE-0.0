@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     InputAction _AttackA;
     InputAction _specialAttackA;
     InputAction _InteractA;
+    private InputAction _lookAction;
+    [SerializeField] Vector2 _lookInput;
     //Movement
     [Header("Movement Settings")]
     [SerializeField] float acceleration = 50;
@@ -108,6 +110,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     //[SerializeField] GameObject electricVFX;       // Partículas eléctricas rodeando al jugador
     public float ultCooldownThalya = 25f;
     private float nextUltTimeThalya = 0f;
+    private float lastAttackRotationTime;
 
     [Header("Interact Settings")]
     [SerializeField] Transform interactSensor;
@@ -128,6 +131,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _AttackA = InputSystem.actions["Attack"];
         _specialAttackA = InputSystem.actions["SpecialAttack"];
         _InteractA = InputSystem.actions["Interact"];
+        _lookAction = InputSystem.actions["Look"];
     }
 
     #endregion
@@ -146,6 +150,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (value.isPressed)
             {
+                lastAttackRotationTime = Time.time; // <--- AGREGA ESTO
+                FixRotation();
                 if (Time.time - lastClickedTime > comboResetTime)
                 {
                     comboStep = 0;
@@ -162,6 +168,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (value.isPressed && Time.time >= nextGunTime)
             {
+                lastAttackRotationTime = Time.time; // <--- AGREGA ESTO
+                FixRotation();
                 RangedAttack();
                 nextGunTime = Time.time + gunCooldown;
             }
@@ -201,7 +209,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void OnUlti(InputValue value)
     {
         if(_CAct)
-        {
+        {            
             if (value.isPressed && !isUsingUlt && Time.time >= nextUltTime)
             {
                 StartCoroutine(ExecuteUltimate());
@@ -241,7 +249,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         HandleTimers();
         Gravity();
-        
+
+        _lookInput = _lookAction.ReadValue<Vector2>();
+
         if (isDashing)
         {
             ApplyDash();
@@ -315,6 +325,27 @@ public class PlayerController : MonoBehaviour, IDamageable
     #endregion
     #region Movement
 
+    void FixRotation()
+    {
+        Plane groundPlane = new Plane(Vector3.up, transform.position);
+        Ray ray = Camera.main.ScreenPointToRay(_lookInput);
+
+        float rayDistance;
+
+        if (groundPlane.Raycast(ray, out rayDistance))
+        {
+            Vector3 pointToLook = ray.GetPoint(rayDistance);
+            Debug.DrawLine(transform.position, pointToLook, Color.cyan, 1f);
+            Vector3 direction = (pointToLook - transform.position).normalized;
+            direction.y = 0;
+
+            if (direction != Vector3.zero)
+            {
+                transform.forward = direction;
+            }
+        }
+    }
+
     void Movement()
     {
         if (isUsingUlt) 
@@ -323,34 +354,52 @@ public class PlayerController : MonoBehaviour, IDamageable
             return; // Salimos de la función, el personaje no responde al input
         }
 
+        /*void MovimientoHades()
+        {
+        Vector3 direction = new Vector3(_moveInput.x, 0, _moveInput.y);
+
+        Ray ray = Camera.main.ScreenPointToRay(_lookInput);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            Vector3 playerForward = hit.point - transform.position;
+            playerForward.y = 0;
+            transform.forward = playerForward;
+        }
+
+        if (direction != Vector3.zero)
+        {
+            _controller.Move(direction.normalized * _movementSpeed * Time.deltaTime);
+            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _smoothTime);
+            transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
+        }
+        }*/
+
         Vector3 targetDirection = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
         float targetSpeed = targetDirection.magnitude * PlayerData.Instance.moveSpeed;
         float currentSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
         float accelRate = (targetSpeed > 0.01f) ? acceleration : deceleration;
         currentVelocity = Vector3.MoveTowards(currentVelocity, targetDirection * PlayerData.Instance.moveSpeed, accelRate * Time.deltaTime);
-        if (targetDirection != Vector3.zero)
+        
+        if (targetDirection != Vector3.zero && Time.time > lastAttackRotationTime + 0.4f) 
         {
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
         _CC.Move(currentVelocity * Time.deltaTime);
-        if(_CAct && currentVelocity != Vector3.zero)
+
+        if(_CAct && _C.activeSelf) 
         {
-            _CAnimator.SetFloat("CSpeed", 1);
-        }
-        else
-        {
-            _CAnimator.SetFloat("CSpeed", 0);
+            _CAnimator.SetFloat("CSpeed", currentVelocity != Vector3.zero ? 1 : 0);
         }
 
-        if(_TAct && currentVelocity != Vector3.zero)
+        // Solo actualizamos Thalya si está activa Y el objeto está encendido
+        if(_TAct && _T.activeSelf)
         {
-            _TAnimator.SetFloat("TSpeed", 1);
-        }
-        else
-        {
-            _TAnimator.SetFloat("TSpeed", 0);
+            _TAnimator.SetFloat("TSpeed", currentVelocity != Vector3.zero ? 1 : 0);
         }
     }
 
