@@ -6,5 +6,6 @@ public class DialogueData : ScriptableObject
 {
     public string[] frases;
     public string nombre;
-    public Image icono;
+    public Sprite icono;
+    public float[] Cooldowns;
 }
