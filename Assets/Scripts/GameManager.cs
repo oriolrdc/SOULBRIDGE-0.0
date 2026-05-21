@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,35 @@ public class GameManager : MonoBehaviour
     public int _coins;
     public Text _coinsText;
     public PlayerInput playerInputs;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += AlCargarEscena;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AlCargarEscena;
+    }
+
+    void AlCargarEscena(Scene escena, LoadSceneMode modo)
+    {
+        Debug.Log("Escena cargada: " + escena.name);
+        
+        // Buscamos al nuevo Player de la escena
+        GameObject player = GameObject.FindWithTag("Player");
+        
+        if (player != null)
+        {
+            playerInputs = player.GetComponent<PlayerInput>();
+            Debug.Log("Inputs del Player encontrados y asignados.");
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró ningún objeto con el Tag 'Player' en esta escena.");
+        }
+    }
+
 
     void Awake()
     {

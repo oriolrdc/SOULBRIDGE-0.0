@@ -778,7 +778,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gracias por jugar a nuestra Beta :)
+  m_Text: Gracias por jugar a nuestra Demo
 --- !u!222 &2108524006
 CanvasRenderer:
   m_ObjectHideFlags: 0

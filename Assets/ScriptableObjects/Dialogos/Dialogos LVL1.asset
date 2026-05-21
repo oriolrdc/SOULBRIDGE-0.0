@@ -13,16 +13,53 @@ MonoBehaviour:
   m_Name: Dialogos LVL1
   m_EditorClassIdentifier: 
   frases:
-  - nombrePersonaje: CARTA
-    lafrase: hola buenas soy la carta jejeje
+  - nombrePersonaje: Mysterious letter
+    lafrase: 'To Cedric and Thalya:
+
+      
+
+      If you are reading these words,
+      it means our worst fears have been realized.
+
+'
     Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
-  - nombrePersonaje: Cedric
-    lafrase: WOW epico
-    Icono: {fileID: -1145302324, guid: 6865bcc2e1106d04d98da1d60cc4530a, type: 3}
-  - nombrePersonaje: Thalya
-    lafrase: xDDDD
-    Icono: {fileID: 1923049803, guid: 6865bcc2e1106d04d98da1d60cc4530a, type: 3}
+  - nombrePersonaje: Mysterious letter
+    lafrase: The Sage Ares has betrayed our order's oath. He has stolen the Soul
+      Bridge, the forbidden relic capable of opening portals between dimensions.
+      For centuries, the Sages used it to seal the Realm of Exile, a place where
+      corrupted souls and beings whose evil threatened the world were imprisoned.
+    Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
+  - nombrePersonaje: Mysterious letter
+    lafrase: 'But Ares has shattered the balance.
+
+'
+    Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
+  - nombrePersonaje: Mysterious letter
+    lafrase: 'Portals have begun to open across the lands. Forgotten creatures, born
+      of hatred and eternal damnation, return once more to our world.
+
+'
+    Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
+  - nombrePersonaje: Mysterious letter
+    lafrase: "\rWe do not know their true intentions. Perhaps they seek power. Perhaps
+      vengeance. Perhaps something worse.\n"
+    Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
+  - nombrePersonaje: Mysterious letter
+    lafrase: 'You must depart immediately for the Temple of Elyndar. Our records
+      speak of ancient secrets hidden there; artifacts from other realities and mysteries
+      beyond imagination. The fate of the kingdom has already begun to unravel.
+
+'
+    Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
+  - nombrePersonaje: Mysterious letter
+    lafrase: "May the spirits of the forest protect you.\r\n\r\n\u2014 The Great
+      Council of the Wise\r\n\n"
+    Icono: {fileID: 21300000, guid: 7f89ec0345b46204ba58610ce062575b, type: 3}
   Cooldowns:
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
   - 0.5
   - 0.5
   - 0.5

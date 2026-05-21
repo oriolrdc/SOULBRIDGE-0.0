@@ -477,6 +477,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         if (comboStep == 0)
         {
+            AS.PlayOneShot(CAttack);
             _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 1: Tajo rápido --- " + PlayerData.Instance.AttackDamage);
             Attack(PlayerData.Instance.AttackDamage, 1.5f);
@@ -485,6 +486,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (comboStep == 1)
         {
+            AS.PlayOneShot(CAttack);
             _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 2: Tajo inverso ---");
             Attack(PlayerData.Instance.AttackDamage, 1.5f);
@@ -493,6 +495,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (comboStep == 2)
         {
+            AS.PlayOneShot(CAttack);
             _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 3: ESTOCADA FINAL ---");
             Attack(PlayerData.Instance.AttackDamage + 10, 2.5f);
@@ -533,6 +536,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if(isBuffed)
         {
+            AS.PlayOneShot(TAttack);
             _TAnimator.SetTrigger("Shoot");
             GameObject ChargedBullet = PoolManager.Instance.GetPooledObject("ChargedBullets", firePoint.position, firePoint.rotation);
             ChargedBullet.SetActive(true);
@@ -540,6 +544,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else
         {
+            AS.PlayOneShot(TAttack);
             _TAnimator.SetTrigger("Shoot");
             GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
             bullet.SetActive(true);
@@ -640,6 +645,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     IEnumerator ExecuteStatBuff()
     {
         isBuffed = true;
+        AS.PlayOneShot(TUlti);
 
         // 1. Guardar valores originales para no perderlos
         float originalSpeed = PlayerData.Instance.moveSpeed;
@@ -692,6 +698,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     
     public void TakeDamage(float damage)
     {
+        AS.PlayOneShot(Damage);
         PlayerData.Instance._Health -= damage;
         UIManager.Instance.UpdateHB(PlayerData.Instance._Health / PlayerData.Instance._maxHealth);
 

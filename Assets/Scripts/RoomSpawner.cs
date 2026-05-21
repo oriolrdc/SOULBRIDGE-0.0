@@ -13,6 +13,13 @@ public class RoomSpawner : MonoBehaviour
     public GameObject vfxSpawnCircle;
     public float tiempoDeAviso = 1.2f;
     public bool estaSpawneando;
+    public AudioSource AS;
+    public AudioClip spawnsfx;
+
+    void Start()
+    {
+        AS = GetComponent<AudioSource>();
+    }
 
     public void IniciarCombate() 
     {
@@ -27,7 +34,7 @@ public class RoomSpawner : MonoBehaviour
         foreach (GameObject prefabEnemigo in wave.enemigosParaSpawnear)
         {
             Transform punto = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            
+            AS.PlayOneShot(spawnsfx);
             // 1. Lanzamos el proceso de spawn individual para cada enemigo
             StartCoroutine(ProcesoSpawnEnemigo(prefabEnemigo, punto.position));
 

@@ -19,9 +19,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private Transform lootspawn;
     [SerializeField] Image HB;
     public bool isDead;
+    public AudioSource AS;
+    public AudioClip hit;
 
     void Start()
     {
+        AS = GetComponent<AudioSource>();
         _EnemyAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         _Animator = GetComponentInChildren<Animator>();
     }
@@ -38,6 +41,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         if (isDead) return; // Si ya está muerto, no recibe más daño
 
+        AS.PlayOneShot(hit);
         _Health -= damage;
         HB.DOFillAmount(_Health / maxHealth, 0.2f);
 
