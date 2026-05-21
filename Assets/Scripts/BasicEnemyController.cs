@@ -17,9 +17,7 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     private float attackCooldown = 1;
     private float timer;
     private float stunTimer;
-    public AudioSource AS;
-    public AudioClip hit;
-
+    
     void Awake()
     {
         _EnemyAgent = GetComponent<NavMeshAgent>();
@@ -38,7 +36,6 @@ public class BasicEnemyController : MonoBehaviour, IKnockbackable
     
     void Start()
     {
-        AS = GetComponent<AudioSource>();
         _player = GameObject.FindWithTag("Player").transform;
         currentSatate = EnemyState.Chasing;
         timer = 1;

@@ -142,6 +142,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _specialAttackA = InputSystem.actions["SpecialAttack"];
         _InteractA = InputSystem.actions["Interact"];
         _lookAction = InputSystem.actions["Look"];
+        AS = GetComponent<AudioSource>();
     }
 
     #endregion

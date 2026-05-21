@@ -22,7 +22,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public AudioSource AS;
     public AudioClip hit;
 
-    void Start()
+    void Awake()
     {
         AS = GetComponent<AudioSource>();
         _EnemyAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
