@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 
 public class ShopManager : MonoBehaviour, IInteractable
 {
@@ -12,7 +11,6 @@ public class ShopManager : MonoBehaviour, IInteractable
     public Text itemDescription;
 
     public GameObject shopCanvas;
-    public PlayerInput inputs;
     public ScriptableItems itemSeleccionado;
 
     void Start()
@@ -48,13 +46,13 @@ public class ShopManager : MonoBehaviour, IInteractable
     public void CloseShop()
     {
         shopCanvas.SetActive(false);
-        inputs.actions.Enable();
+        GameManager.Instance.ADInputs();
     }
 
     public void Interacted()
     {
         shopCanvas.SetActive(true);
-        inputs.actions.Disable();
+        GameManager.Instance.ADInputs();
     }
 
     public void TryToBuy()

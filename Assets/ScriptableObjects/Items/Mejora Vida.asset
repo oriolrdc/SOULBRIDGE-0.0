@@ -16,7 +16,7 @@ MonoBehaviour:
   descripcion: "Refuerza la esencia vital del personaje, otorgando un incremento
     permanente a los puntos de salud m\xE1ximos."
   price: 200
-  icono: {fileID: 355283028, guid: 6865bcc2e1106d04d98da1d60cc4530a, type: 3}
+  icono: {fileID: -150638815, guid: 840e50d6d9538a941957e017f914a5df, type: 3}
   iconoComprada: {fileID: 0}
   multiplicador: 0
   comprada: 0

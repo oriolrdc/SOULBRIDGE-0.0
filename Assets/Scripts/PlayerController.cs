@@ -117,6 +117,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float InteractRange;
     [SerializeField] LayerMask interactableLayers;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource AS;
+    [SerializeField] AudioClip Foots;
+    [SerializeField] AudioClip Dash;
+    [SerializeField] AudioClip CAttack;
+    [SerializeField] AudioClip TAttack;
+    [SerializeField] AudioClip CUlti;
+    [SerializeField] AudioClip TUlti;
+    [SerializeField] AudioClip Damage;
+
     private bool isBuffed = false;
 
     #endregion
@@ -137,7 +147,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     #endregion
     #region Detectores
 
-    public void OnMove(InputValue value) => _moveInput = value.Get<Vector2>();
+    public void OnMove(InputValue value)
+    {
+        _moveInput = value.Get<Vector2>();
+        //AS.PlayOneShot(Foots);
+    }
 
     public void OnDash(InputValue value)
     {
@@ -408,6 +422,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void StartDash()
     {
+        AS.PlayOneShot(Dash);
         isDashing = true;
         dashTimer = dashDuration;
         cooldownTimer = PlayerData.Instance.dashCooldown;
@@ -586,6 +601,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }*/
 
         // 3. Daño continuo durante la duración
+        AS.PlayOneShot(CUlti);
         float timer = 0;
         while (timer < ultDuration)
         {

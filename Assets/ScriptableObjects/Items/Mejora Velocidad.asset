@@ -16,7 +16,7 @@ MonoBehaviour:
   descripcion: "Aumenta la velocidad de movimiento permanente, permiti\xE9ndote explorar
     y posicionarte m\xE1s r\xE1pido."
   price: 100
-  icono: {fileID: 21300000, guid: b89c22a833ff8e049b98f7a63752b10e, type: 3}
+  icono: {fileID: -1771089595, guid: 840e50d6d9538a941957e017f914a5df, type: 3}
   iconoComprada: {fileID: 0}
   multiplicador: 0
   comprada: 0

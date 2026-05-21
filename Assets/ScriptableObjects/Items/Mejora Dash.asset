@@ -16,7 +16,7 @@ MonoBehaviour:
   descripcion: "Reduce el tiempo de recuperaci\xF3n de la esquiva, permiti\xE9ndote
     moverte entre ataques enemigos con fluidez."
   price: 300
-  icono: {fileID: 21300000, guid: 03693a4f219c3134f81f3260eadfc2fe, type: 3}
+  icono: {fileID: -496441080, guid: 840e50d6d9538a941957e017f914a5df, type: 3}
   iconoComprada: {fileID: 0}
   multiplicador: 0.5
   comprada: 0

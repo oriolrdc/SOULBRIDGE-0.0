@@ -11,37 +11,66 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Image icono;
     [SerializeField] bool Escribiendo;
     [SerializeField] DialogueData Startdialogo;
+    public bool DialogueStarted;
+    public GameObject DCanvas;
     public int Index;
+    public GameObject card;
 
     public void Start()
     {
-        dialogueTxt.text = Startdialogo.frases[Index];
-        nameTxt.text = Startdialogo.nombre;
+        Escribiendo = false;
+        dialogueTxt.text = Startdialogo.frases[Index].lafrase;
+        nameTxt.text = Startdialogo.frases[Index].nombrePersonaje;
         Debug.Log($"Txt: {dialogueTxt}, Data: {Startdialogo}");
-        icono.sprite = Startdialogo.icono;
+        icono.sprite = Startdialogo.frases[Index].Icono;
+    }
+
+    public void IniciarDialogo(DialogueData dialogos)
+    {
+        Index = 0;
+        ActualizarIntefraz(dialogos);
     }
 
     public void ChangeFrase(DialogueData dialogos)
     {
         if(!Escribiendo)
         {
-            if (dialogos.frases.Length == 0) return;
-            Index = (Index + 1) % dialogos.frases.Length;
+            // Primero comprobamos si es la última frase ANTES de sumar
+            if (Index >= dialogos.frases.Length - 1)
+            {
+                DCanvas.SetActive(false);
+                GameManager.Instance.ADInputs();
+                DialogueStarted = false;
+                Destroy(card);
+                return;
+            }
+
+            Index++;
             ActualizarIntefraz(dialogos);
         }
     }
 
     public void ActualizarIntefraz(DialogueData dialogos)
     {
-        dialogueTxt.text = dialogos.frases[Index];
+        // Borra la línea que pone el texto directamente
         StartCoroutine(TextAnimation(dialogos));
     }
 
     public IEnumerator TextAnimation(DialogueData dialogos)
     {
         Escribiendo = true;
-        DOTween.Restart("StartText");
-        yield return new WaitForSeconds(dialogos.Cooldowns[Index]);
+
+        dialogueTxt.text = "";
+        nameTxt.text = "";
+
+        float duracion = dialogos.Cooldowns[Index];
+        
+        dialogueTxt.DOText(dialogos.frases[Index].lafrase, duracion).SetEase(Ease.Linear);
+        nameTxt.DOText(dialogos.frases[Index].nombrePersonaje, duracion).SetEase(Ease.Linear);
+        icono.sprite = dialogos.frases[Index].Icono;
+
+        yield return new WaitForSeconds(duracion);
+
         Escribiendo = false;
     }
 }
