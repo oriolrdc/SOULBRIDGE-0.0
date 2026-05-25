@@ -532,6 +532,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 285752168751262524}
     m_Modifications:
+    - target: {fileID: -9218051134193604354, guid: abb568ae65e182044a98be6a983a88f2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ca31c629f25e8904c942c89b641eceb4, type: 2}
     - target: {fileID: -8679921383154817045, guid: abb568ae65e182044a98be6a983a88f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -572,10 +576,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -55625156951198315, guid: abb568ae65e182044a98be6a983a88f2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 890c4659f84d264428449c4d006f1ce8, type: 2}
     - target: {fileID: 919132149155446097, guid: abb568ae65e182044a98be6a983a88f2, type: 3}
       propertyPath: m_Name
       value: Zombie Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 8239829362776531824, guid: abb568ae65e182044a98be6a983a88f2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ca31c629f25e8904c942c89b641eceb4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
