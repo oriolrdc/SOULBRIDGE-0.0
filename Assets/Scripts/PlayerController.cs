@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float chargedRange = 15f;
     private float chargeTimer = 0f;
     private bool isCharging = false;
+    [SerializeField] GameObject chargeVFX;
     [Header("Spirit Attack Settings")]
     [SerializeField] float nextSpiritTime = 0;
     [SerializeField] float spiritCooldown = 20;
@@ -99,6 +100,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float ultDamageTick = 10f;
     [SerializeField] float ultTickRate = 0.5f;
     [SerializeField] float ultRadius = 5f;
+    [SerializeField] GameObject ultVFX;
     //[SerializeField] GameObject ultVisualEffect;  // Prefab de partículas para el área
     [SerializeField] bool isUsingUlt = false;
     [SerializeField] float ultCooldown = 30f;
@@ -227,6 +229,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {            
             if (value.isPressed && !isUsingUlt && Time.time >= nextUltTime)
             {
+                ultVFX.SetActive(true);
                 StartCoroutine(ExecuteUltimate());
                 nextUltTime = Time.time + ultCooldown;
                 UIManager.Instance.CCUlt();
@@ -278,15 +281,34 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if(_TAct == true)
         {
+
             if (_specialAttackA.IsPressed())
             {
                 if (!isCharging) 
                 {
+                    _TAnimator.SetBool("Shoot", true);
                     isCharging = true;
+                    chargeVFX.SetActive(true);
                     chargeTimer = 0;
                     Debug.Log("Empezando a cargar...");
                 }
-                
+
+                Plane groundPlane = new Plane(Vector3.up, transform.position);
+                Ray ray = Camera.main.ScreenPointToRay(_lookInput); // Uso _lookInput como en tu foto
+                float rayDistance;
+
+                if (groundPlane.Raycast(ray, out rayDistance))
+                {
+                    Vector3 pointToLook = ray.GetPoint(rayDistance);
+                    Vector3 direction = (pointToLook - transform.position).normalized;
+                    direction.y = 0;
+
+                    if (direction != Vector3.zero)
+                    {
+                        transform.forward = direction;
+                    }
+                }
+
                 chargeTimer += Time.deltaTime;
 
                 // Opcional: Limitar la carga al máximo
@@ -298,14 +320,17 @@ public class PlayerController : MonoBehaviour, IDamageable
                 {
                     if (chargeTimer >= minChargeTime)
                     {
+                        _TAnimator.SetBool("Shoot", false);
                         ExecuteChargedShoot();
                     }
+                    
                     else
                     {
+                        _TAnimator.SetBool("Shoot", false);
                         Debug.Log("Carga insuficiente");
                     }
-                    
-                    // Resetear siempre al soltar
+
+                    chargeVFX.SetActive(false);
                     isCharging = false;
                     chargeTimer = 0;
                 }
@@ -538,20 +563,29 @@ public class PlayerController : MonoBehaviour, IDamageable
         if(isBuffed)
         {
             AS.PlayOneShot(TAttack);
-            _TAnimator.SetTrigger("Shoot");
+            _TAnimator.SetBool("Shoot", true);
             GameObject ChargedBullet = PoolManager.Instance.GetPooledObject("ChargedBullets", firePoint.position, firePoint.rotation);
             ChargedBullet.SetActive(true);
             UIManager.Instance.CTBasic();
+            
+            Invoke("StopShoot", 0.2f);
         }
         else
         {
             AS.PlayOneShot(TAttack);
-            _TAnimator.SetTrigger("Shoot");
+            _TAnimator.SetBool("Shoot", true);
             GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
             bullet.SetActive(true);
             UIManager.Instance.CTBasic();
+            
+            Invoke("StopShoot", 0.2f);
         }
         
+    }
+
+    void StopShoot()
+    {
+        _TAnimator.SetBool("Shoot", false);
     }
     
     #endregion
@@ -570,10 +604,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     void ExecuteChargedShoot()
     {
         Debug.Log("¡DISPARO CARGADO!");
-        UIManager.Instance.CTPHab();
 
-        // 1. Efecto visual (opcional: un rayo láser o estela grande)
-        
+        UIManager.Instance.CTPHab();
+        GameObject cobete = PoolManager.Instance.GetPooledObject("ChargeShotVFX", firePoint.position, firePoint.rotation);
+        cobete.SetActive(true);
         // 2. Detectar TODO en una línea ancha
         RaycastHit[] hits = Physics.SphereCastAll(firePoint.position, chargedWidth, transform.forward, chargedRange, enemyLayers);
 
@@ -616,6 +650,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             yield return new WaitForSeconds(ultTickRate);
         }
 
+        ultVFX.SetActive(false);
         isUsingUlt = false;
         _CAnimator.SetBool("isUtliOn", false);
     }
