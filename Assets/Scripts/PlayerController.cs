@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float lastClickedTime;
     [Header("Ranged Settings")]
     [SerializeField] Transform firePoint;
+    [SerializeField] VisualEffect muzzleFlash;
     [Header("Attack Cooldowns")]
     [SerializeField] float swordCooldown = 0.4f;
     [SerializeField] float gunCooldown = 0.2f;
@@ -573,6 +575,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             AS.PlayOneShot(TAttack);
             _TAnimator.SetBool("Shoot", true);
+            muzzleFlash.Play();
             GameObject ChargedBullet = PoolManager.Instance.GetPooledObject("ChargedBullets", firePoint.position, firePoint.rotation);
             ChargedBullet.SetActive(true);
             UIManager.Instance.CTBasic();
@@ -583,6 +586,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             AS.PlayOneShot(TAttack);
             _TAnimator.SetBool("Shoot", true);
+            muzzleFlash.Play();
             GameObject bullet = PoolManager.Instance.GetPooledObject("ElectricBullets", firePoint.position, firePoint.rotation);
             bullet.SetActive(true);
             UIManager.Instance.CTBasic();
@@ -615,6 +619,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         Debug.Log("¡DISPARO CARGADO!");
 
         UIManager.Instance.CTPHab();
+        muzzleFlash.Play();
         GameObject cobete = PoolManager.Instance.GetPooledObject("ChargeShotVFX", firePoint.position, firePoint.rotation);
         cobete.SetActive(true);
         // 2. Detectar TODO en una línea ancha

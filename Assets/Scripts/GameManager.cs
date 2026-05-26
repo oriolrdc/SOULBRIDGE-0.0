@@ -81,6 +81,5 @@ public class GameManager : MonoBehaviour
             playerInputs.actions.Enable();
             playerInputs.enabled = true; // ¡Importante encenderlo!
         }
-
     }
 }
