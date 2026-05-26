@@ -503,6 +503,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         if (comboStep == 0)
         {
+            GameObject Slash = PoolManager.Instance.GetPooledObject("Slashes", attackPoint.position, attackPoint.rotation);
+            Slash.transform.SetParent(this.transform);
+            Slash.SetActive(true);
             AS.PlayOneShot(CAttack);
             _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 1: Tajo rápido --- " + PlayerData.Instance.AttackDamage);
@@ -512,6 +515,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (comboStep == 1)
         {
+            GameObject Slash = PoolManager.Instance.GetPooledObject("Slashes", attackPoint.position, attackPoint.rotation);
+            Slash.transform.SetParent(this.transform);
+            Slash.SetActive(true);
             AS.PlayOneShot(CAttack);
             _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 2: Tajo inverso ---");
@@ -521,6 +527,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (comboStep == 2)
         {
+            GameObject Slash = PoolManager.Instance.GetPooledObject("Slashes", attackPoint.position, attackPoint.rotation);
+            Slash.transform.SetParent(this.transform);
+            Slash.SetActive(true);
             AS.PlayOneShot(CAttack);
             _CAnimator.SetTrigger("Attack");
             Debug.Log("--- ATAQUE 3: ESTOCADA FINAL ---");

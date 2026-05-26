@@ -243,7 +243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7152468484655045512
 Transform:
   m_ObjectHideFlags: 0
@@ -306,6 +306,8 @@ MonoBehaviour:
   lootspawn: {fileID: 8001505059993893483}
   HB: {fileID: 0}
   isDead: 0
+  AS: {fileID: 0}
+  hit: {fileID: 0}
 --- !u!33 &882961234842559627
 MeshFilter:
   m_ObjectHideFlags: 0

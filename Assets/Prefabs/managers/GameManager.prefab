@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53144f937c44a004e9d5c76da63a3867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _coins: 0
+  _coinsText: {fileID: 0}
+  playerInputs: {fileID: 0}

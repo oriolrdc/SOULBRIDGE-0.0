@@ -65,3 +65,11 @@ MonoBehaviour:
     prefab: {fileID: 6372991831408153515, guid: c60ee6e61131d9b47915b649dfee9b6f, type: 3}
     poolSize: 20
     pooledObjects: []
+  - parentName: ChargeShotVFX
+    prefab: {fileID: 1178536928495513511, guid: ec29e45bff677b74d96af6a1f6603c09, type: 3}
+    poolSize: 20
+    pooledObjects: []
+  - parentName: Slashes
+    prefab: {fileID: 90375681853216342, guid: f60fc51da9ffb0b459f9a7b0f8602688, type: 3}
+    poolSize: 40
+    pooledObjects: []
