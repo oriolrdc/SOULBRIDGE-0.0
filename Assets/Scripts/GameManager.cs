@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     void AlCargarEscena(Scene escena, LoadSceneMode modo)
     {
         Debug.Log("Escena cargada: " + escena.name);
+        _coinsText.text = _coins.ToString();
         
         // Buscamos al nuevo Player de la escena
         GameObject player = GameObject.FindWithTag("Player");

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,6 +21,24 @@ public class UIManager : MonoBehaviour
     public Image _TUlt;
     public Image _CTPHab;
     public Image _TBasic;
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += AlCargarEscena;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AlCargarEscena;
+    }
+
+    void AlCargarEscena(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Hola");
+        ChangeHBandHab();
+        _Rhb.fillAmount = PlayerData.Instance._Health / PlayerData.Instance._maxHealth;
+        _Lhb.fillAmount = PlayerData.Instance._Health / PlayerData.Instance._maxHealth;
+    }
 
     void Awake()
     {
