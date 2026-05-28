@@ -65,6 +65,10 @@ MonoBehaviour:
     prefab: {fileID: 6372991831408153515, guid: c60ee6e61131d9b47915b649dfee9b6f, type: 3}
     poolSize: 20
     pooledObjects: []
+  - parentName: PocionVida
+    prefab: {fileID: 8995269365757565315, guid: 122ee1f7ccfc05e40b0495ce4a75a089, type: 3}
+    poolSize: 20
+    pooledObjects: []
   - parentName: ChargeShotVFX
     prefab: {fileID: 1178536928495513511, guid: ec29e45bff677b74d96af6a1f6603c09, type: 3}
     poolSize: 20

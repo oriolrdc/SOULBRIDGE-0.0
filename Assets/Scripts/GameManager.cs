@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
+    
     [Header("Coins")]
     public int _coins;
     public Text _coinsText;
@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     void Awake()
     {
         if (Instance == null)
@@ -60,6 +59,17 @@ public class GameManager : MonoBehaviour
         int cantidadDinero = Random.Range(10, 50);
         _coins += cantidadDinero;
         _coinsText.text = _coins.ToString();
+    }
+
+    public void Heal()
+    {
+        PlayerData.Instance._Health += 30f;
+        if(PlayerData.Instance._Health > PlayerData.Instance._maxHealth)
+        {
+            PlayerData.Instance._Health = PlayerData.Instance._maxHealth;
+        }
+
+        UIManager.Instance.Heal(PlayerData.Instance._Health);
     }
 
     public void EndLevel(string scene)
@@ -82,5 +92,10 @@ public class GameManager : MonoBehaviour
             playerInputs.actions.Enable();
             playerInputs.enabled = true; // ¡Importante encenderlo!
         }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

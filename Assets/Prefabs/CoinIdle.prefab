@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 6575062233062185781}
-  AS: {fileID: 6132291425305267517}
+  coinAS: {fileID: 0}
   coinsfx: {fileID: 8300000, guid: fae245618b344a64aa831c3afc266bf7, type: 3}
 --- !u!95 &6420038484650646878
 Animator:
@@ -147,8 +147,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: fae245618b344a64aa831c3afc266bf7, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

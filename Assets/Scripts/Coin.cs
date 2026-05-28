@@ -6,7 +6,7 @@ public class Coin : MonoBehaviour
     public AudioSource coinAS;
     public AudioClip coinsfx;
 
-    void Start()
+    void Awake()
     {
         coinAS = GetComponent<AudioSource>();
     }

@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     public Image _TUlt;
     public Image _CTPHab;
     public Image _TBasic;
+    public PlayerController _PC;
 
     void OnEnable()
     {
@@ -34,8 +35,11 @@ public class UIManager : MonoBehaviour
 
     void AlCargarEscena(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Hola");
-        ChangeHBandHab();
+        _CHBr.SetActive(true);
+        _THBr.SetActive(false);
+        _CHabilities.SetActive(true);
+        _THabilities.SetActive(false);
+        DOTween.Restart("CBarra");
         _Rhb.fillAmount = PlayerData.Instance._Health / PlayerData.Instance._maxHealth;
         _Lhb.fillAmount = PlayerData.Instance._Health / PlayerData.Instance._maxHealth;
     }
@@ -51,6 +55,12 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Heal(float health)
+    {
+        _Rhb.fillAmount = health;
+        _Lhb.fillAmount = health;
     }
 
     public void UpdateHB(float damage)

@@ -78,11 +78,26 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     void DropLoot()
     {
-        int amount = UnityEngine.Random.Range(minCoins, maxCoins + 1);
-        for (int i = 0; i < amount; i++)
+        // Generamos un número entre 0 y 100
+        float chance = UnityEngine.Random.Range(0f, 100f);
+
+        if (chance <= 70f) 
         {
-            GameObject Coin = PoolManager.Instance.GetPooledObject("Coins", lootspawn.position, lootspawn.rotation);
-            if(Coin != null) Coin.SetActive(true);
+            // --- LÓGICA DEL 70% (MONEDAS) ---
+            int amount = UnityEngine.Random.Range(minCoins, maxCoins + 1);
+            for (int i = 0; i < amount; i++)
+            {
+                GameObject Coin = PoolManager.Instance.GetPooledObject("Coins", lootspawn.position, lootspawn.rotation);
+                if (Coin != null) Coin.SetActive(true);
+            }
+        }
+        else 
+        {
+            // Asegúrate de que "PocionVida" sea el nombre exacto en tu PoolManager
+            GameObject Potion = PoolManager.Instance.GetPooledObject("PocionVida", transform.position, transform.rotation);
+            if (Potion != null) Potion.SetActive(true);
+            
+            Debug.Log("Dropeado: Poción de Vida (30% chance)");
         }
     }
 }

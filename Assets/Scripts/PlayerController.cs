@@ -52,11 +52,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     //Cedric
     [Header("Cedric Settings")]
     [SerializeField] GameObject _C;
-    [SerializeField] bool _CAct;
+    public bool _CAct;
     //Thalya
     [Header("Thalya Settings")]
     [SerializeField] GameObject _T;
-    [SerializeField] bool _TAct;
+    public bool _TAct;
     //MeleeAttack
     [Header("Combat Settings")]
     [SerializeField] Transform attackPoint;
